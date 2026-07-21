@@ -139,7 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
     messages: {
       yourTurn: 'Your move, Red.',
       safe: c => `Yellow plays ${'abcdefg'[c]}.`,
-      block: c => `Yellow blocks at ${'abcdefg'[c]} — single threats won’t land. You need two (Lesson 1) or a stack (Lesson 2).`,
+      block: c => `Yellow blocks at ${'abcdefg'[c]} — a single threat won’t land. You need two (Lesson 1) or a stack (Lesson 2).`,
+      blockFutile: (c, wins) => `Yellow blocks ${'abcdefg'[c]} — too late: that was a DOUBLE threat (Lesson 1). Yellow can only stop one end. Finish at ${(wins || []).map(x => 'abcdefg'[x]).join(' or ')} and win.`,
       zugzwang: c => `Yellow is out of safe moves — ${'abcdefg'[c]} is forced. Your structure did this.`,
       win: 'Won. Trace it back: double threat, stack, or squeeze — which lesson landed the blow?',
       lose: 'Yellow wins — an attentive blocker punishes structureless attacking. Reset: d first, build quiet threes, THEN convert.',

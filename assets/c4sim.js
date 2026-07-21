@@ -106,6 +106,7 @@
       thinking: 'Yellow is thinking…',
       safe: c => `Yellow plays ${COLS[c]} — a safe filler move.`,
       block: c => `Yellow plays ${COLS[c]}, occupying your winning square. Your claim is dead.`,
+      blockFutile: (c, wins) => `Yellow blocks ${COLS[c]} — but you had a double threat. Yellow can only stop one; win at ${(wins || []).map(x => COLS[x]).join(' or ')}.`,
       zugzwang: c => `ZUGZWANG — Yellow has no safe move left and is forced to play ${COLS[c]}. Finish it!`,
       win: 'You win! Yellow ran out of safe moves and had to floor your claim.',
       lose: 'Yellow wins. Your claim died, and Yellow cashed in the leftovers.',
@@ -220,9 +221,17 @@
         if (ywin) return finish(msg.lose, 'bad', ywin);
         if (!Core.legalCols(grid).length) return finish(msg.draw, 'bad');
         renderGrid();
-        const note = msg[mv.why] || msg.safe;
-        setStatus((typeof note === 'function' ? note(mv.col) : note) + ' ' + msg.yourTurn,
-                  mv.why === 'zugzwang' ? 'good' : (mv.why === 'block' ? 'bad' : undefined));
+        // A "block" that leaves Red still winning was futile — Red had a double
+        // threat. Celebrate it instead of scolding a single-threat miss.
+        let why = mv.why, redWins = null;
+        if (why === 'block') {
+          redWins = Core.winningCols(grid, 'R');
+          if (redWins.length) why = 'blockFutile';
+        }
+        const note = msg[why] || msg.safe;
+        const text = (typeof note === 'function' ? note(mv.col, redWins) : note);
+        setStatus(text + ' ' + msg.yourTurn,
+                  (why === 'zugzwang' || why === 'blockFutile') ? 'good' : (why === 'block' ? 'bad' : undefined));
         updateMeta();
       }, 550);
     }
