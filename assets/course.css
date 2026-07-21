@@ -1,0 +1,241 @@
+/* Shared stylesheet for the Connect 4 strategy course.
+   Every lesson and reference document links this file. */
+
+:root {
+  --paper: #fffdf8;
+  --ink: #1a1a18;
+  --muted: #6b6b64;
+  --accent: #8b2500;
+  --rule: #d9d4c5;
+  --frame: #1f5fa8;
+  --frame-dark: #174a85;
+  --red: #d33a2c;
+  --yellow: #f2c230;
+  --hole: #fffdf8;
+  --good: #2e7d32;
+  --bad: #b3261e;
+  --good-bg: #eef6ee;
+  --bad-bg: #fbeeed;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2.5rem 1.25rem 5rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Charter, Georgia, 'Times New Roman', serif;
+  font-size: 1.06rem;
+  line-height: 1.6;
+}
+
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin: 2.2rem 0 0.6rem;
+  font-weight: 700;
+}
+
+.kicker {
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+
+p { margin: 0.9rem 0; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+strong { font-weight: 700; }
+
+.aside {
+  border-left: 3px solid var(--rule);
+  padding: 0.1rem 0 0.1rem 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 1.2rem 0;
+}
+
+.cite { font-size: 0.85em; color: var(--muted); }
+
+/* ---------- Connect 4 board ---------- */
+
+.c4-wrap { margin: 1.6rem 0; }
+
+.c4-board {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  background: linear-gradient(180deg, var(--frame), var(--frame-dark));
+  border-radius: 12px;
+  padding: 10px;
+  max-width: 26rem;
+  margin: 0 auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+
+.c4-cell {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--hole);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.28);
+  position: relative;
+}
+
+.c4-cell.r { background: radial-gradient(circle at 35% 30%, #e8695c, var(--red) 60%); }
+.c4-cell.y { background: radial-gradient(circle at 35% 30%, #f8dc7a, var(--yellow) 60%); }
+
+.c4-cell.threat::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border: 3px dashed var(--good);
+  border-radius: 50%;
+  animation: c4pulse 1.1s ease-in-out infinite;
+}
+
+.c4-cell.dropped { animation: c4drop 0.3s ease-out; }
+
+@keyframes c4pulse { 50% { transform: scale(0.9); opacity: 0.55; } }
+@keyframes c4drop { from { transform: translateY(-120%); } to { transform: translateY(0); } }
+
+.c4-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  max-width: 26rem;
+  margin: 0.3rem auto 0;
+  padding: 0 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: ui-monospace, Menlo, monospace;
+}
+
+.c4-clickable .c4-colbtn {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.c4-cols {
+  position: relative;
+  max-width: 26rem;
+  margin: 0 auto;
+}
+
+.c4-colgrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  padding: 10px;
+}
+
+.c4-colhit {
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.c4-colhit:hover { background: rgba(255,255,255,0.14); }
+
+.c4-caption {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+/* ---------- Puzzle feedback ---------- */
+
+.c4-prompt {
+  font-weight: 700;
+  margin: 1.2rem 0 0.6rem;
+}
+
+.c4-feedback {
+  max-width: 26rem;
+  margin: 0.9rem auto 0;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-size: 0.97rem;
+  display: none;
+}
+
+.c4-feedback.show { display: block; }
+.c4-feedback.good { background: var(--good-bg); border: 1px solid var(--good); }
+.c4-feedback.bad { background: var(--bad-bg); border: 1px solid var(--bad); }
+
+.c4-retry {
+  margin-top: 0.5rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.c4-retry:hover { background: var(--ink); color: var(--paper); }
+
+/* ---------- Multiple choice ---------- */
+
+.c4-choices { max-width: 30rem; margin: 0.8rem auto; display: grid; gap: 0.5rem; }
+
+.c4-choice {
+  font-family: inherit;
+  font-size: 1rem;
+  text-align: left;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.c4-choice:hover { border-color: var(--ink); }
+.c4-choice.good { border-color: var(--good); background: var(--good-bg); }
+.c4-choice.bad { border-color: var(--bad); background: var(--bad-bg); }
+.c4-choice:disabled { cursor: default; opacity: 0.85; }
+
+/* ---------- Glossary / reference ---------- */
+
+dt { font-weight: 700; margin-top: 1.1rem; }
+dd { margin: 0.15rem 0 0 0; padding-left: 1rem; border-left: 2px solid var(--rule); }
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@media print {
+  body { padding: 0; font-size: 11pt; }
+  .c4-feedback, .c4-retry { display: none !important; }
+}

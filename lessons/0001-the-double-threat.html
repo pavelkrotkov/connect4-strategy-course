@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 · The Double Threat</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 1 · ~7 minutes</div>
+  <h1>The Double Threat</h1>
+  <p class="subtitle">One threat gets blocked. Two threats win the game.</p>
+
+  <p>You already block threats when you see them — and so does your kid, most of the time. The games you lose (or fail to win) aren't lost to a threat you missed. They're lost to a position where <strong>two</strong> threats appeared at once, and blocking one just handed over the other.</p>
+
+  <p>Almost every won game of Connect 4 ends this way. Strong play isn't about sneaking a four past someone — it's about deliberately manufacturing a <a href="../reference/glossary.html#double-threat"><strong>double threat</strong></a>: two ways to win, both live on the same turn. Your opponent gets one block. You win with the other. <span class="cite">(<a href="https://papergames.io/docs/game-guides/connect4/advanced-guide/">papergames.io advanced guide</a>)</span></p>
+
+  <h2>The one rule of this lesson</h2>
+  <p>The simplest double threat is the <a href="../reference/glossary.html#open-three"><strong>open three</strong></a>: three in a row with <em>both</em> end squares empty and <a href="../reference/glossary.html#playable">playable</a> (a square is playable if a disc dropped there lands on it right now). Two live ends, one block available — game over.</p>
+
+  <p>So the skill has two sides:</p>
+  <p><strong>Attacking:</strong> grow your pairs so they can become open threes.<br>
+  <strong>Defending:</strong> kill open threes at the <em>pair</em> stage — once both ends are live, no block saves you.</p>
+
+  <hr>
+
+  <h2>Puzzle 1 — Make the open three</h2>
+  <p>You are Red, and it's your move. Yellow (a certain young opponent) has been filling the left edge. One of your moves creates an unstoppable double threat. <strong>Click a column to drop your disc.</strong></p>
+  <div id="p1"></div>
+
+  <h2>Puzzle 2 — Too late?</h2>
+  <p>Now the other side of the coin. Here Yellow got an open three on the board.</p>
+  <div id="p2"></div>
+
+  <h2>Puzzle 3 — Playability is everything</h2>
+  <p>Same idea, one floor up. You are Red. A double threat is available on the <em>second</em> row — but only one move creates it, because one of the end squares over on the right has nothing under it yet. <strong>Click a column.</strong></p>
+  <div id="p3"></div>
+
+  <hr>
+
+  <h2>Take it to the living room</h2>
+  <p>This week, in games with your kid: don't try to win fast. Just build a pair on the bottom row with empty space on both sides, and watch whether they defend the ends. If they only ever block completed threes, you now win at will — and when you'd rather <em>not</em> win, "fail" to notice their pairs and let them find the open three themselves. The delighted shriek when a kid first discovers a double threat is the whole point.</p>
+
+  <div class="aside">
+    <strong>Why this is also the deep theory:</strong> Victor Allis's 1988 proof that Connect 4 is a first-player win is, at heart, an accounting of threats — which player can bank a threat that must eventually come due. Double threats are the entry-level version of that idea; odd/even threats (a future lesson) are the grandmaster version. <span class="cite">(<a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis, <em>A Knowledge-based Approach of Connect-Four</em>, 1988</a>)</span>
+  </div>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> the <a href="https://papergames.io/docs/game-guides/connect4/advanced-guide/">papergames.io Connect 4 Advanced Guide</a> — a short, high-quality read covering double threats, forced moves, and center play. For the curious-about-the-math thread, skim the introduction of <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis's thesis</a> (it's friendlier than it sounds).</p>
+
+  <footer>
+    <p>New terms: <a href="../reference/glossary.html#threat">threat</a> · <a href="../reference/glossary.html#playable">playable square</a> · <a href="../reference/glossary.html#open-three">open three</a> · <a href="../reference/glossary.html#double-threat">double threat</a> — all in the <a href="../reference/glossary.html">course glossary</a>. Next: <a href="0002-the-seven-trap.html">Lesson 2, The "7" Trap</a>.</p>
+    <p>Stuck, or want more puzzles like #3? Describe what confused you to an AI assistant (Claude or otherwise) and ask it to drill more positions like it — that's how these lessons were built.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Puzzle 1: Red pair d–e on the bottom row; f makes an open three (ends c and g).
+  C4.puzzle(document.getElementById('p1'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      'YY.RR..'
+    ],
+    prompt: 'Red to move. Create a double threat.',
+    correct: [5],
+    success: 'Open three on d–e–f! Both ends (c and g) are empty and playable. Yellow can block only one — you win on the other.',
+    wrong: 'Yellow can handle that with a single block. Look for the move that gives your three-in-a-row TWO live ends.',
+    wrongByCol: {
+      2: 'Close — c gives you three in a row (c–d–e), but the left end (b) is already Yellow. Only one live end, so Yellow just blocks f.',
+      3: 'Stacking on your own pair builds toward a vertical, but that is one threat — blockable. Find the horizontal open three.',
+      4: 'Stacking on your own pair builds toward a vertical, but that is one threat — blockable. Find the horizontal open three.'
+    },
+    threats: [[5, 2], [5, 6]]
+  });
+
+  // Puzzle 2: Yellow open three c–d–e on the bottom; both ends live. Red cannot save it.
+  C4.choice(document.getElementById('p2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '...RR..',
+      '..YYY.R'
+    ],
+    prompt: 'Red to move. Can Red stop Yellow from winning?',
+    options: [
+      { label: 'Yes — Red blocks at column b', correct: false,
+        explain: 'Block b and Yellow wins at f. An open three has two live ends; one block covers one.' },
+      { label: 'Yes — Red blocks at column f', correct: false,
+        explain: 'Block f and Yellow wins at b. An open three has two live ends; one block covers one.' },
+      { label: 'No — Yellow already wins either way', correct: true,
+        explain: 'Exactly. This position was lost one move ago. The real block happens at the PAIR stage — never let a pair grow both ends.' }
+    ]
+  });
+
+  // Puzzle 3: Red pair d–e on row 2. Playing c lands on row 2 -> open three with
+  // both ends (b2, f2) supported. Playing f also makes a three, but the g end has
+  // an empty column below it, so only one end is live.
+  C4.puzzle(document.getElementById('p3'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '...RR..',
+      'YYYRYR.'
+    ],
+    prompt: 'Red to move. Create a double threat on row 2.',
+    correct: [2],
+    success: 'Your disc lands on row 2: open three c–d–e with ends at b and f — and both are playable, because the squares under them are filled. Unstoppable.',
+    wrong: 'That doesn’t force anything — Yellow gets time to defend. You want a three on row 2 whose BOTH end squares sit on filled columns.',
+    wrongByCol: {
+      5: 'Tempting! That makes a three on row 2 (d–e–f), but the right end is above an EMPTY column g — not playable yet. Yellow calmly blocks the c side.',
+      3: 'That stacks a vertical three — a single threat. Yellow caps column d and you’ve spent your best move on one blockable threat.',
+      1: 'b2 makes a split three (b2 _ d2 e2) — it does force Yellow to block c2, but one forcing threat is still just one threat. You can do double.'
+    },
+    threats: [[4, 1], [4, 5]]
+  });
+
+});
+</script>
+</body>
+</html>

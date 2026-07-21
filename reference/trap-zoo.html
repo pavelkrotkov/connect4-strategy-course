@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect 4 Trap Zoo</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Reference</div>
+  <h1>The Trap Zoo</h1>
+  <p class="subtitle">One skeleton, many bodies: two of your lines whose empty finishing squares stack in one column. Every specimen below is machine-verified. From <a href="../lessons/0010-the-trap-zoo.html">Lesson 10</a>; mechanism in <a href="../lessons/0002-the-seven-trap.html">Lesson 2</a> and <a href="../lessons/0008-threats-sharing-a-column.html">Lesson 8</a>.</p>
+
+  <h2>The universal test</h2>
+  <p><strong>Trace each three-disc line to its empty finishing square.</strong> Same column, stacked → real trap (poisoned column). One shared square → a single claim in costume; one block kills it. Different columns → not a trap; audit each claim: alive → lowest → parity.</p>
+
+  <h2>1 · The Seven <span class="cite">(row + rising diagonal, sharing the corner disc)</span></h2>
+  <div id="z1"></div>
+
+  <h2>2 · The Rails <span class="cite">(two parallel diagonals, one row apart)</span></h2>
+  <div id="z2"></div>
+
+  <h2>3 · The Hook <span class="cite">(row + diagonal descending onto the stack from above)</span></h2>
+  <div id="z3"></div>
+
+  <h2>4 · The X <span class="cite">(rising and descending diagonals, crossing)</span></h2>
+  <div id="z4"></div>
+
+  <h2>⚠ The Mirage <span class="cite">(two lines, ONE finishing square — not a trap)</span></h2>
+  <div id="z5"></div>
+
+  <p class="aside"><strong>Field notes:</strong> kids build the rails by accident (diagonal walls are fun). The hook and X hide best — nothing sits on a shared corner disc, so nothing "looks like a 7". The mirage fools both sides: defenders panic, attackers overinvest — check the finishing squares before you do either. Verticals never join the zoo: their finishing square is always immediately playable, so they can't wait in ambush.</p>
+
+  <footer>
+    Part of the <a href="../index.html">Connect 4 strategy course</a> · Companions: <a href="cheat-sheet.html">field guide</a> · <a href="glossary.html">glossary</a> · Print me.
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  C4.board(document.getElementById('z1'), {
+    board: ['.......','.......','.......','.RRR...','.YRY...','.RYR.YY'],
+    threats: [[3, 4], [2, 4]],
+    caption: 'Bar b3–c3–d3 + rising diagonal b1–c2–d3. Stack: e3 (row) under e4 (diagonal). Spare claim at a3.'
+  });
+  C4.board(document.getElementById('z2'), {
+    board: ['.......','.......','..R....','.RR....','RRY....','RYY..YY'],
+    threats: [[2, 3], [1, 3]],
+    caption: 'Rails a1–b2–c3 and a2–b3–c4. Stack: d4 under d5. The accidental trap — fat diagonal bands do this on their own.'
+  });
+  C4.board(document.getElementById('z3'), {
+    board: ['.......','...R...','...Y...','.RRR.RY','.YRY.YR','YYYR.YR'],
+    threats: [[3, 4], [2, 4], [3, 0], [2, 0]],
+    caption: 'Bar b3–c3–d3 + descending diagonal d5–f3–g2 finishing at e4. Stack: e3 under e4 — plus a bonus stack a3/a4.'
+  });
+  C4.board(document.getElementById('z4'), {
+    board: ['.......','.......','....R..','..R.YR.','YRYRYRR','RYYRYYY'],
+    threats: [[2, 3], [1, 3]],
+    caption: 'Rising a1–b2–c3 (finishes d4) × descending e4–f3–g2 (finishes d5). Stack: d4 under d5. Spring: play d.'
+  });
+  C4.board(document.getElementById('z5'), {
+    board: ['.......','.......','.......','..R.R..','YRY.YRY','RYY.RYR'],
+    threats: [[2, 3]],
+    caption: 'Rising a1–b2–c3 AND descending e3–f2–g1 both finish at d4. One square = one claim — blockable, and even-row to boot.'
+  });
+});
+</script>
+</body>
+</html>

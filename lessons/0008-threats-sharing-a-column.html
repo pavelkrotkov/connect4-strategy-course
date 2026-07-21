@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 8 · Threats That Share a Column</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 8 · ~8 minutes</div>
+  <h1>Threats That Share a Column</h1>
+  <p class="subtitle">The basement rule: when claims stack up in one column, only the lowest one is real.</p>
+
+  <h2>Warm-up (45 seconds, from Lesson 1)</h2>
+  <p>Long time since Lesson 1 — prove it survived. Fresh position, same law.</p>
+  <div id="warmup"></div>
+
+  <h2>The idea: the basement rules the building</h2>
+  <p>You know two column situations already: you own both stacked squares (<a href="0002-the-seven-trap.html">Lesson 2</a> — poisoned column, you win) and claims in <em>separate</em> columns (<a href="0003-odd-and-even-threats.html">Lesson 3</a> — parity decides). Lesson 8 is the missing case: <strong>your claim and theirs in the same column.</strong></p>
+  <p>The law is one sentence: <strong>discs enter a column from the bottom, so the lowest claim gets decided first — and everything above it is hostage.</strong> The opponent of the basement-claim's owner can never fill toward it (the square below it is poisoned for them, <a href="0006-defense.html">Lesson 6</a> style), so the upper claim simply never comes due. Two consequences that override earlier rules of thumb:</p>
+  <p><strong>Hostage beats parity.</strong> A wrong-parity claim in the basement still rules the column — and a beautiful odd claim sitting above an enemy claim is worth nothing. So your claim-evaluation checklist gains its final ordering: <em>① is the window alive? ② is it lowest in its column? ③ only then, parity.</em> <span class="cite">(This is the informal skeleton of the threat-interaction analysis in <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis's thesis</a>; the full formal version is his nine strategic rules.)</span></p>
+
+  <h2>Check 1 — Who owns column b?</h2>
+  <p>Red's row-2 three claims <strong>b2</strong>; Yellow's row-3 three claims <strong>b3</strong>, directly above it (both marked). Column b is empty. Note b2 is row 2 — <em>even</em>, Red's wrong parity.</p>
+  <div id="p1"></div>
+
+  <h2>Check 2 — The endgame audit</h2>
+  <div id="p2"></div>
+
+  <div class="aside">
+    <strong>Why no clever tricks here:</strong> you might hope to "spend" a hostage column to flip the zugzwang count (<a href="0004-zugzwang.html">Lesson 4</a>). Run the arithmetic for this position: entering the column triggers a forced three-move sequence (your fill, their block, your counter-block) — three squares consumed, turn passed — but it also exposes three fresh neutral squares above. Two parity flips cancel; the count stands. Real tempo surgery in Connect 4 is exactly this finicky, which is why Allis needed nine interlocking rules where this course gives you rules of thumb. If the theory itch strikes, the thesis's threats chapter is the scratch.
+  </div>
+
+  <h2>Take it to the living room</h2>
+  <p>Practical habit: whenever you spot a claim — yours or theirs — trace <em>straight down its column</em> before you celebrate or panic. A kid's scary-looking high threat above your low one needs no answer at all (save the tempo; <a href="0006-defense.html">Lesson 6</a>, question 5). And your stage-3 kid who's started banking claims is ready to be shown this the discovery way: let them build a proud high claim over your quiet low one, play the squeeze out, and afterward rebuild just the column: "which square was going to get filled first?"</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> the threats chapter of <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis's thesis</a>, which you can now genuinely read: alive/dead groups, threat interaction, and the nine rules are all formalizations of Lessons 1–8. Companion: <a href="https://web.mit.edu/sp.268/www/2010/connectFourSlides.pdf">MIT's slides</a> on useless threats. Sanity-check any position you're unsure of on <a href="https://connect4.gamesolver.org">the solver</a>.</p>
+
+  <footer>
+    <p>New term: <a href="../reference/glossary.html#hostage">hostage claim / the basement rule</a> — glossary and <a href="../reference/cheat-sheet.html">field guide</a> updated. Previously: <a href="0007-coaching-your-kid.html">Lesson 7, Coaching Your Kid</a>. Next: <a href="0009-allis-nine-rules.html">Lesson 9, Allis's Nine Rules</a>.</p>
+    <p>Unsure about a column in a real game? Describe it — your teacher will trace the forced sequence with you.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Warm-up (script-verified): Red pair d2-e2. c2 lands on row 2 -> three c-d-e
+  // with BOTH ends supported (b1, f1 filled). f2 gives only one live end,
+  // because column g is genuinely empty (g2 unplayable).
+  C4.puzzle(document.getElementById('warmup'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '...RR..',
+      'YYRYRY.'
+    ],
+    prompt: 'Red to move. Create a double threat.',
+    correct: [2],
+    success: 'c2 — the three c–d–e has ends b2 and f2, and BOTH sit on filled columns. Playability is everything: same law as Lesson 1, day one.',
+    wrong: 'No double threat there — Yellow gets time. Find the row-2 three whose BOTH end squares rest on filled columns.',
+    wrongByCol: {
+      5: 'Tempting — f2 makes d–e–f, but the right end (g2) floats over an EMPTY column g. One live end, one easy block. Extend the other way.',
+      3: 'd3 lands on mixed support and connects nothing — no threat at all. The double threat lives on row 2.',
+      4: 'e3 stacks a vertical three (e1–e2–e3) — one threat, one easy cap at e4. The double threat lives on row 2.'
+    },
+    threats: [[4, 1], [4, 5]]
+  });
+
+  // Check 1 (hand-verified): Red claims b2 (row-2 three c2-d2-e2, f2=Y kills the
+  // other window); Yellow claims b3 (row-3 three c3-d3-e3, f3=R). Column b empty.
+  // Yellow can NEVER play b1 (floors b2 -> Red wins). Red owns the column despite
+  // b2 being even.
+  C4.choice(document.getElementById('p1'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '..YYYR.',
+      '..RRRY.',
+      '..RYYR.'
+    ],
+    threats: [[4, 1], [3, 1]],
+    prompt: 'Two claims, one column. Who owns column b?',
+    options: [
+      { label: 'Red — lower claim rules', correct: true,
+        explain: 'Yellow can never touch column b: filling b1 floors b2 and Red wins on the spot. Red’s claim guards the gate forever, so Yellow’s b3 never comes due — hostage. And notice b2 is EVEN, Red’s wrong parity: the basement rule outranks the parity rule. In a squeeze, Yellow forced into b1 loses instantly.' },
+      { label: 'Yellow — parity decides it', correct: false,
+        explain: 'Parity is checklist item ③, and it only gets a vote in separate columns. Here item ② settles it first: Red’s claim is LOWER, so b1 is poisoned for Yellow forever and b3 is hostage above a gate Yellow can’t pass. Even-row or not, the basement rules.' },
+      { label: 'Neither — they cancel out', correct: false,
+        explain: 'Not symmetric: Yellow can never enter the column (b1 hands Red the game), while Red merely gains nothing by entering (his b1 triggers block, counter-block, everything defused). One side is locked out, the other holds the key — that’s ownership, and in zugzwang it converts to a win.' }
+    ]
+  });
+
+  // Check 2: hostage + parity audit, no board.
+  C4.choice(document.getElementById('p2'), {
+    prompt: 'Endgame audit (Lesson 4 style). You are Red with two claims: an ODD one at f5 — but Yellow holds a claim at f2 below it — and an EVEN one at a2 in an otherwise untouched column. Which claims enter your zugzwang arithmetic?',
+    options: [
+      { label: 'The odd f5 claim', correct: false,
+        explain: 'Odd, yes — but hostage: to reach f5 the column must fill through f2, and the moment f1 is filled, Yellow’s f2 comes live. Worse, f1 is now poisoned for YOU — playing it lets Yellow win at f2. Checklist order: alive, THEN lowest-in-column, then parity.' },
+      { label: 'The even a2 claim', correct: false,
+        explain: 'It’s lowest in its column and very much alive — but it’s even: Red’s wrong parity (Lesson 3). In the slow fill-out that square drifts to Yellow. A bluff at best.' },
+      { label: 'Neither — go build', correct: true,
+        explain: 'Correct, and painful: the odd claim is hostage (and makes f1 poisoned for you), the even claim is wrong-parity. Your real count is zero — create a fresh, low, odd claim BEFORE the neutral squares run out, or you’re the one who cracks.' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

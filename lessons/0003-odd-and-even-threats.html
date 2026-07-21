@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3 · Odd and Even Threats</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 3 · ~8 minutes</div>
+  <h1>Odd and Even Threats</h1>
+  <p class="subtitle">Why the first player wins a perfect game — and which of your claims are real money.</p>
+
+  <h2>Warm-up (45 seconds, from Lesson 2)</h2>
+  <p>Lesson 2's trap — but this one faces the other way, so pattern-matching won't save you; you have to see the mechanism. The 7 is built and Yellow's position is riddled. <strong>Force the win in two moves.</strong></p>
+  <div id="warmup"></div>
+
+  <h2>The idea: claims come due by row parity</h2>
+  <p>Number the rows from the floor: row 1 at the bottom, row 6 on top. Rows 1, 3, 5 are <strong>odd</strong>; rows 2, 4, 6 are <strong>even</strong>.</p>
+  <div id="parity"></div>
+
+  <p>Now the key scene. Late in a close game, both players are just filling space, each avoiding the other's threat squares. Here's the trick available to <em>Yellow</em> (the second player): whenever Red starts a fresh column, Yellow can simply answer <strong>on top of Red's disc</strong>, again and again. Play that out in your head: Red's disc lands on row 1 — odd. Yellow's lands on row 2 — even. Red row 3, Yellow row 4. In every column where Yellow "shadows" like this, <strong>Red collects the odd squares and Yellow collects the even squares</strong>. <span class="cite">(This "follow-up" idea and the threat-parity rules are formalized in <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis's thesis</a>; a compact version is in <a href="https://web.mit.edu/sp.268/www/2010/connectFourSlides.pdf">MIT's Connect Four slides</a>.)</span></p>
+
+  <p>So when the dust settles, a lasting claim (a <a href="../reference/glossary.html#threat">threat</a> square you own that isn't playable yet) is only <em>money</em> if it sits on a row your color will actually receive:</p>
+
+  <p><strong>Red — the first player — banks odd claims (rows 1, 3, 5).<br>
+  Yellow — the second player — banks even claims (rows 2, 4, 6).</strong></p>
+
+  <p>A Red claim on an even row usually evaporates: in the slow fill-out, Yellow gets that square for free. This single idea is the spine of the 1988 solution: opening in the center is the only first move that lets Red <em>force</em> an odd claim against best defense — which is why center-first wins and everything else doesn't. <span class="cite">(<a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis 1988</a>; <a href="https://www.rd.com/article/how-to-win-connect-4/">Allis interviewed in Reader's Digest</a>.)</span></p>
+
+  <div class="aside">
+    <strong>Fine print:</strong> these are the headline rules. Allis's full rule set handles the messy cases — multiple claims, claims sharing a column (your stacked pair from Lesson 2 is one such special case: it wins regardless of parity). And note verticals never bank at all: a vertical three's completing square is playable <em>immediately</em>, so it's always block-on-sight — which is why your kid's beloved tower attack never beats an attentive opponent.
+  </div>
+
+  <h2>Check 1 — The rule itself</h2>
+  <div id="p1"></div>
+
+  <h2>Check 2 — Reread the 7 with new eyes</h2>
+  <p>Lesson 2's position again. Red's three claims are marked: a3, e3 (the row's two ends) and e4 (the diagonal). You know the stacked pair e3/e4 wins on the spot. But suppose the stack didn't exist — <strong>which claim would still win the endgame for Red all by itself?</strong></p>
+  <div id="p2"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>From now on, every time you form a quiet three, <em>count its empty square's row from the floor</em>. On 1, 3, or 5: sit on it, trade moves, let the board fill — the square is yours. On 2, 4, or 6: treat it as a bluff, useful only to scare an opponent into wasting a block. And this is your subtlest handicap lever yet for the graceful losses: play "strong-looking" moves that only bank <em>even</em> claims. You'll look dangerous, threaten loudly, and quietly never actually win — no suspicious blunders required.</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> <a href="https://web.mit.edu/sp.268/www/2010/connectFourSlides.pdf">MIT's Connect Four slides</a> — the friendliest serious treatment of threats, useless threats, and parity. When you want the full story, Allis's <a href="https://tromp.github.io/c4/connect4_thesis.pdf">thesis</a> chapters on threats and zugzwang are the real thing. The one idea we've now set up but not yet taught — <em>forcing</em> the opponent to run out of safe moves — is <a href="../reference/glossary.html#zugzwang">zugzwang</a>, a natural Lesson 4.</p>
+
+  <footer>
+    <p>Updated terms: <a href="../reference/glossary.html#odd-even">odd/even threats</a> — see also the new <a href="../reference/cheat-sheet.html">one-page field guide</a> covering Lessons 1–3. Previously: <a href="0002-the-seven-trap.html">Lesson 2, The "7" Trap</a>. Next: <a href="0004-zugzwang.html">Lesson 4, Zugzwang</a>.</p>
+    <p>Anything shaky — especially the follow-up argument? Describe the position to an AI assistant and ask it to walk through a full endgame fill-out square by square.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Warm-up: the 7 trap MIRRORED (bar d3-e3-f3, diagonal f1-e2-d3, corner d3).
+  // Stacked pair: c3 (bar) / c4 (diagonal). Red already holds c1.
+  // Red c2 loads it: block c3 -> Red c4 (f1-e2-d3-c4); else Red c3 (c3-f3).
+  // (d1 is Yellow so the d1-e2-f3 diagonal is dead: the bar's g-side has no
+  // stacked follow-up, keeping c the unique forcing move — script-verified.)
+  C4.puzzle(document.getElementById('warmup'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '...RRR.',
+      '...YRY.',
+      'Y.RYYRY'
+    ],
+    prompt: 'Red to move. Force the win in two.',
+    correct: [2],
+    success: 'c2 loads the mirrored stack. If Yellow blocks c3, that disc floors your c4 — diagonal f1–e2–d3–c4. If Yellow does anything else, c3 completes the row c3–d3–e3–f3. Same trap, other direction.',
+    wrong: 'Nothing is forced there — Yellow gets a free tempo. The 7 is on the board, just not facing the way it did in Lesson 2.',
+    wrongByCol: {
+      4: 'e4 makes a vertical three (e2–e3–e4) — one threat, one block at e5. Look at the stacked squares on the LEFT of your formation.',
+      6: 'g2 threatens the bar from the other end — but when Yellow blocks g3, nothing is waiting above it: d1 is Yellow, so no diagonal ever formed on that side. One threat, one block — half a trap.',
+      3: 'd4 connects nothing decisive. Trace the diagonal from f1 up-left: where does it want to land next?'
+    },
+    threats: [[3, 2], [2, 2]]
+  });
+
+  // Parity diagram: odd squares of one column marked on an empty board.
+  C4.board(document.getElementById('parity'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......'
+    ],
+    threats: [[5, 3], [3, 3], [1, 3]],
+    caption: 'Any column, counted from the floor: the marked squares are rows 1, 3, 5 — the ODD squares.'
+  });
+
+  // Check 1: the headline rule.
+  C4.choice(document.getElementById('p1'), {
+    prompt: 'You are Red — you moved first. For the slow endgame, a banked claim on which kind of row is real money?',
+    options: [
+      { label: 'An even row (2, 4, 6)', correct: false,
+        explain: 'Even squares drift to Yellow: answering on top of your discs hands Yellow rows 2, 4, 6 in every shadowed column. Even claims are Yellow’s currency, not yours.' },
+      { label: 'An odd row (1, 3, 5)', correct: true,
+        explain: 'Right. When columns fill by shadowing, the first player collects rows 1, 3, 5. A Red claim on an odd row will eventually be Red’s square — you can simply wait for it.' },
+      { label: 'Whichever row happens to fill last', correct: false,
+        explain: 'Order of filling doesn’t decide who LANDS on a square — parity does. Count the square’s row from the floor: odd rows fall to the first player, even rows to the second.' }
+    ]
+  });
+
+  // Check 2: the Lesson 2 seven, reread through parity. a3 and e3 are odd
+  // (sufficient alone for Red); e4 is even (insufficient alone).
+  C4.choice(document.getElementById('p2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.RRR...',
+      '.YRY...',
+      '.RYY...'
+    ],
+    threats: [[3, 0], [3, 4], [2, 4]],
+    prompt: 'Forget the stack for a moment. Which Red claim wins the endgame on its own?',
+    options: [
+      { label: 'The claim at e4 alone', correct: false,
+        explain: 'e4 is row 4 — even. On its own it drifts to Yellow in the fill-out. It only matters here because it sits stacked on e3, punishing the block.' },
+      { label: 'The claim at a3 alone', correct: true,
+        explain: 'a3 is row 3 — odd — so it’s Red’s square in any slow fill-out. (e3 is odd too and would also suffice; e4, the even one, is the only claim that’s worthless alone.) The 7 is overkill: a stack for the fast kill AND an odd spare for the slow one.' },
+      { label: 'None of the claims alone', correct: false,
+        explain: 'The odd claims stand on their own: a3 and e3 are row 3, and odd squares fall to the first player in the fill-out. Only e4 (even) needs the stack to matter.' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

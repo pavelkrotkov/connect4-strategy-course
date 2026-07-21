@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect 4 Glossary</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Reference</div>
+  <h1>Glossary</h1>
+  <p class="subtitle">The course's shared vocabulary. Every lesson uses these terms exactly as defined here.</p>
+
+  <dl>
+    <dt id="threat">Threat</dt>
+    <dd>Three of your discs in a line (horizontal, vertical, or diagonal) plus one empty square that would complete four. The empty square is the <em>threat square</em>. A threat only wins if the threat square can actually be reached — see <a href="#playable">playable square</a>.</dd>
+
+    <dt id="playable">Playable square</dt>
+    <dd>A square a disc can land on <em>right now</em>: it's in the bottom row, or the square directly below it is filled. A threat square that isn't playable yet is a <em>latent</em> threat — real, but not urgent.</dd>
+
+    <dt id="open-three">Open three</dt>
+    <dd>Three of your discs in a row with <strong>both</strong> end squares empty <em>and playable</em>. This is an automatic <a href="#double-threat">double threat</a>: the opponent can block only one end. An open three with both ends live is already a won game.</dd>
+
+    <dt id="double-threat">Double threat (fork)</dt>
+    <dd>Two threats whose threat squares are both playable at once. The opponent can block one per turn, so a double threat wins on the spot. Nearly every won game of Connect 4 ends in one. Covered in <a href="../lessons/0001-the-double-threat.html">Lesson 1</a>.</dd>
+
+    <dt id="seven-trap">The "7" trap</dt>
+    <dd>A five-disc formation shaped like the digit 7: a horizontal three and a diagonal three sharing their corner disc (e.g. row b3–c3–d3 + diagonal b1–c2–d3, sharing d3). Its completion squares include a <a href="#stacked">stacked pair</a> (e3 for the row, e4 for the diagonal), so the opponent can never block the lower square without enabling the upper one. Works mirrored or flipped in any direction. Covered in <a href="../lessons/0002-the-seven-trap.html">Lesson 2</a>.</dd>
+
+    <dt id="mirage">False trap (mirage / focal point)</dt>
+    <dd>Two lines of the same player whose empty finishing squares are the <em>same single square</em>. Looks like a trap, but it is one claim wearing a costume: one enemy disc on that square (or the wrong parity) kills both lines at once. Run the universal test before panicking or celebrating: trace each line to its finishing square. Covered in <a href="../lessons/0010-the-trap-zoo.html">Lesson 10</a>.</dd>
+
+    <dt id="stacked">Stacked threats (poisoned column)</dt>
+    <dd>Two of your threat squares in the same column, directly on top of each other. Blocking the lower square fills the support for the upper one, so no block works — the whole column is <em>poisoned</em> for the opponent (any disc they add there hands you the win), while you can often force the win at will by filling toward the lower square yourself. Covered in <a href="../lessons/0002-the-seven-trap.html">Lesson 2</a>.</dd>
+
+    <dt id="odd-even">Odd / even threats</dt>
+    <dd>Threat squares classified by row parity, counting the bottom row as row 1 (odd). In the endgame fill-out the second player can "shadow" (always answer on top), which hands the first player the odd squares and the second player the even squares of each shadowed column. Hence the headline rules: <strong>Red (first player) banks odd claims; Yellow (second player) banks even claims</strong>; a claim on the wrong parity usually evaporates. Special cases (multiple claims, <a href="#stacked">stacked pairs</a>) refine this — see Allis's rule set. Covered in <a href="../lessons/0003-odd-and-even-threats.html">Lesson 3</a>.</dd>
+
+    <dt id="zugzwang">Zugzwang</dt>
+    <dd>A position where having to move is a disadvantage — every legal move helps the opponent, typically by filling the square below their threat square. Since passing is impossible, the endgame is an arithmetic race: call a square <em>neutral</em> if either player can fill it without consequence; with claims banked, an <strong>odd</strong> neutral count on your turn squeezes the opponent first, an <strong>even</strong> count squeezes you. Covered in <a href="../lessons/0004-zugzwang.html">Lesson 4</a>.</dd>
+
+    <dt id="hostage">Hostage claim (the basement rule)</dt>
+    <dd>When both players hold claims in the same column, the <strong>lowest claim rules</strong>: the square beneath it is poisoned for its opponent, so every claim above it is <em>hostage</em> — it never comes due. This outranks parity: evaluate a claim as ① window alive? ② lowest in its column? ③ parity. A hostage claim also poisons the column's entry square for its own owner. Covered in <a href="../lessons/0008-threats-sharing-a-column.html">Lesson 8</a>.</dd>
+
+    <dt id="tempo">Tempo</dt>
+    <dd>One move considered as a unit of time. "Wasting a tempo" is making a move that doesn't improve your position — usually a gift to the opponent, but deliberately burning a tempo is a real tool: it flips the parity of the <a href="#zugzwang">zugzwang</a> count, and (played into your own claim's column) it can quietly kill a won endgame. Covered in <a href="../lessons/0004-zugzwang.html">Lessons 4</a>–<a href="../lessons/0005-opening-play.html">5</a>.</dd>
+
+    <dt id="nine-rules">Strategic rules (Allis's nine)</dt>
+    <dd>The nine local <em>certificates</em> — Claimeven, Baseinverse, Vertical, Aftereven, Lowinverse, Highinverse, Baseclaim, Before, Specialbefore — each guaranteeing the waiting player certain squares and thereby refuting enemy groups. A compatible set covering every enemy group decides a position without search. Full table: <a href="allis-rules.html">nine-rules card</a>; covered in <a href="../lessons/0009-allis-nine-rules.html">Lesson 9</a>.</dd>
+
+    <dt id="solved">Solved game</dt>
+    <dd>A game whose outcome under perfect play is mathematically known. Connect 4 was solved in 1988 by Victor Allis (and independently by James Dow Allen): the first player wins by starting in the center column; starting anywhere else, the second player can at least draw. <span class="cite">Source: <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis, <em>A Knowledge-based Approach of Connect-Four</em> (1988)</a>.</span></dd>
+  </dl>
+
+  <footer>
+    Part of the <a href="../index.html">Connect 4 strategy course</a>. Terms are added as lessons introduce them.
+  </footer>
+</main>
+</body>
+</html>

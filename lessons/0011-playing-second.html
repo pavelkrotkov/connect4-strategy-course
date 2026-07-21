@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 11 · Playing Second</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 11 · ~9 minutes</div>
+  <h1>Playing Second</h1>
+  <p class="subtitle">Half of all games start with the disadvantage. Here is what the second seat is actually playing for.</p>
+
+  <p class="aside" style="border-left-color:#8b2500">As in Lesson 5, every "wins / draws / loses" below is perfect-play truth queried from <a href="https://connect4.gamesolver.org">the solver</a> — position strings given so you can check.</p>
+
+  <h2>Warm-up (15 seconds, from Lesson 9)</h2>
+  <div id="warmup"></div>
+
+  <h2>The idea: three different games</h2>
+  <p>The second seat plays one of three games, decided by Red's very first disc:</p>
+  <p><strong>Game 1 — Red takes d1 (a strong opponent).</strong> With perfect play you lose; your job is maximum resistance. Answer <strong>d2</strong> (loses slowest, −1 vs −2 elsewhere — <a href="0006-defense.html">Lesson 6</a>), then play for the draw with the tool you met in Lesson 9: <strong>Claimeven</strong> — answer on top, collect even squares. Your whole economy runs on <a href="0003-odd-and-even-threats.html">Lesson 3</a> flipped: <em>your</em> money rows are 2, 4, 6. Bank even claims, kill Red's odd ones early (they never expire on their own), and wait for the error. Against humans, it comes.</p>
+  <p><strong>Game 2 — Red takes c1 or e1 (a decent opponent).</strong> The game is an honest draw, and it's <em>yours to hold</em>. After 1.&nbsp;c1, four replies keep the balance — c2, d1, e1, f1 — while a1, b1, g1 <em>lose</em> (solver "3"). Better: holding correctly sets a tripwire field. After 1.&nbsp;c1 d1, only <strong>two</strong> of Red's seven follow-ups keep Red's draw (c2 and d2) — the other five lose the game for Red on the spot (solver "34"). The second seat doesn't beg for a draw; it sells one at extortionate prices.</p>
+  <p><strong>Game 3 — Red plays anything else (most kitchen tables).</strong> You are <em>winning</em>, by force — if you punish precisely. And here the center dogma breaks: after 1.&nbsp;a1 you win with b1 or d1 (+2 each), but after 1.&nbsp;b1 the <strong>only</strong> winning reply is <strong>c1</strong> — taking the center d1 merely draws (solver "1", "2"). The punish is position-specific; that's what the drills below burn in. (Mirrors apply: g1 ↦ f1/d1, f1 ↦ e1.)</p>
+
+  <h2>Check 1 — The dogma breaker</h2>
+  <div id="p1"></div>
+
+  <h2>Check 2 — The corner gift</h2>
+  <div id="p2"></div>
+
+  <h2>Check 3 — Selling the draw</h2>
+  <div id="p3"></div>
+
+  <h2>Check 4 — The drawing engine</h2>
+  <div id="p4"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>This lesson is for the day your kid learned Lesson 5 — from your own fridge, probably — and grabs d1 with a grin. That day you've succeeded, and your game changes seats: d2, even claims, tripwires, patience. Notice the beautiful symmetry with the coaching ladder: an opponent who opens d1 against you <em>is</em> stage 4. Losing the first seat is the diploma. (And when you'd rather they win their d1 games while they're learning: skip the tripwires — hold the draw passively and let their initiative tell. That's the second seat's version of the graceful loss.)</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source:</strong> <a href="https://connect4.gamesolver.org">the solver</a>, used actively: set up 1.&nbsp;b1 c1 and click through Red's tries — watching every path bend toward Yellow is the fastest way to believe the second seat can attack. Theory spine: the Claimeven drawing machinery is Allis's <a href="https://tromp.github.io/c4/connect4_thesis.pdf">chapter 6</a> (see <a href="0009-allis-nine-rules.html">Lesson 9</a> and the <a href="../reference/allis-rules.html">nine-rules card</a>). The second-player punish table now lives on the <a href="../reference/openings.html">openings card</a>.</p>
+
+  <footer>
+    <p>Reference updated: <a href="../reference/openings.html">openings card</a> (playing-second table). Previously: <a href="0010-the-trap-zoo.html">Lesson 10, The Trap Zoo</a>.</p>
+    <p>Facing an opening the card doesn't cover? Ask an AI assistant to query the solver on the exact line with you.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  C4.choice(document.getElementById('warmup'), {
+    prompt: 'Recall from Lesson 9 — a Claimeven (two stacked empties, upper square even): which square is the waiting player GUARANTEED?',
+    options: [
+      { label: 'The even upper square', correct: true,
+        explain: 'Answer on top, collect the even square — every time. Hold that thought: it is the second player’s entire drawing engine, and this lesson runs on it.' },
+      { label: 'The odd lower square', correct: false,
+        explain: 'Backwards — the waiting player CONCEDES the odd lower square to collect the even one above it. (Odd squares are the first player’s natural harvest; that was Lesson 3.)' },
+      { label: 'One of the two, unchosen', correct: false,
+        explain: '"One of the two" is the weaker Vertical/Baseinverse promise. Claimeven guarantees the SPECIFIC even square — which is why it refutes every group through it.' }
+    ]
+  });
+
+  // Solver "2": after Red b1, Yellow scores [-2,0,1,0,-2,-2,-3] -> only c1 (+1) wins;
+  // b2 and d1 draw; the rest lose.
+  C4.choice(document.getElementById('p1'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.R.....'
+    ],
+    prompt: 'Red opened b1. You are Yellow. The strongest reply?',
+    options: [
+      { label: 'Take the center, d1', correct: false,
+        explain: 'The dogma — and here it only DRAWS (solver: 0). Against a b1 opening the refutation is contact, not geography. One column exists that wins by force.' },
+      { label: 'Play c1, right beside it', correct: true,
+        explain: 'The only winning reply on the board (+1, solver "2"). c1 crowds Red’s disc, claims the center-adjacent file, and leaves every Red continuation losing or scrambling. Center-worship costs half a point here — punishes are position-specific.' },
+      { label: 'Cap it at b2', correct: false,
+        explain: 'Solver: 0 — a draw. Capping feels active but spends your reply on Red’s least valuable file. The winning move fights for the squares NEXT to center: c1.' }
+    ]
+  });
+
+  // Solver "1": after Red a1, Yellow scores [-1,2,1,2,-1,1,-2] -> b1/d1 win (+2),
+  // c1/f1 win slower (+1), but e1 and a2 LOSE (-1), g1 loses fastest.
+  C4.choice(document.getElementById('p2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      'R......'
+    ],
+    prompt: 'Red opened in the corner. Pick your punish.',
+    options: [
+      { label: 'b1 — or center d1', correct: true,
+        explain: 'Both win at full speed (+2, solver "1"): b1 crowds the corner from the strong side, d1 takes the board’s spine. One subtlety as you convert: you inherit the initiative but NOT Red’s parity — you still moved second, so your banked claims still want even rows (Lesson 3). Attack with structure and stacks; bank on 2/4/6.' },
+      { label: 'e1 — near the center', correct: false,
+        explain: 'Astonishingly, this LOSES (solver: −1). It’s the second-seat twin of Lesson 5’s trap (there, b1 lost after 1.d1 a1): loitering NEAR the center without taking it gives Red time to consolidate. Punish crisply or not at all.' },
+      { label: 'a2 — cap the corner', correct: false,
+        explain: 'Also loses (−1)! Capping the corner spends your tempo where nothing grows — the same dead real estate that made a1 bad for Red makes a2 bad for you.' }
+    ]
+  });
+
+  // Solver "3": after Red c1, draws are c2/d1/e1/f1; a1,b1 lose (-2), g1 (-3).
+  // Solver "34": after 1.c1 d1, only c2 and d2 keep Red's draw.
+  C4.choice(document.getElementById('p3'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '..R....'
+    ],
+    prompt: 'Red opened c1 — an honest draw. You reply d1. How many of Red’s seven follow-ups keep Red’s draw alive?',
+    options: [
+      { label: 'Two', correct: true,
+        explain: 'Only c2 and d2 (solver "34") — the other five moves LOSE for Red, some by a lot (a1: −5). This is what "holding the draw" really means in the second seat: a balance where your opponent walks a two-plank bridge and you stroll a boulevard. Set the tripwires and be patient.' },
+      { label: 'Four', correct: false,
+        explain: 'Four is YOUR count — as Yellow, four replies held the draw after 1.c1 (c2, d1, e1, f1). Red’s count after your d1 is far crueler: two (c2, d2). The drawn game is level; the tightrope is not symmetric.' },
+      { label: 'Six', correct: false,
+        explain: 'Nowhere close — just two (c2 and d2). Everything else loses for Red, which is why a "mere draw" in the second seat is a trap-laying business, not a concession.' }
+    ]
+  });
+
+  C4.choice(document.getElementById('p4'), {
+    prompt: 'Against a strong d1 opener you cannot win by force. Your drawing engine, move after move, is —',
+    options: [
+      { label: 'Answering on top of them', correct: true,
+        explain: 'Claimeven, played as a plan: shadow their columns, harvest rows 2/4/6, and make sure every Red group needs at least one square you’ve claimed. It’s Allis’s drawing certificate performed live — and it quietly banks YOUR even claims for the day Red slips.' },
+      { label: 'Racing them with verticals', correct: false,
+        explain: 'Verticals are the noisiest, most blockable idea in the game (Lesson 3) — a defender who attacks with towers just donates tempi. Your even-row economy runs on quiet shadowing, not races.' },
+      { label: 'Mirroring their columns oppositely', correct: false,
+        explain: 'Playing the mirror-image column looks clever and means nothing — Connect 4 lines don’t respect left-right symmetry once the center is contested. The shadow that works is vertical: directly on top (Claimeven).' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect 4 Openings Card</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Reference</div>
+  <h1>The Openings Card</h1>
+  <p class="subtitle">Perfect-play facts, verified against <a href="https://connect4.gamesolver.org">Pons' solver</a> (queried 2026-07-10). Columns a–g; you are Red, moving first.</p>
+
+  <h2>Move one</h2>
+  <p><strong>d — wins</strong> (the only one) · <strong>c, e — draw</strong> · <strong>b, f — lose</strong> · <strong>a, g — lose fastest</strong></p>
+  <p class="aside">Geometry behind it: 69 total four-windows on the board; 51 touch column d (c/e: 39, b/f: 27, a/g: 15). The most connected squares are d3 and d4 — 13 windows each. Want an honest draw against a weaker opponent? Open c or e instead — invisible handicap.</p>
+
+  <h2>After 1. d1 — punishing each reply</h2>
+  <p>Every Yellow reply loses with perfect play. Your move, by reply:</p>
+  <dl>
+    <dt>d2 (copy-cat — the best defense)</dt>
+    <dd><strong>d3, forced.</strong> The only winning move; every alternative loses (solver pos "44"). Keep the tower until the fight starts.</dd>
+    <dt>c1 (snuggle left)</dt>
+    <dd><strong>f1.</strong> The center stack d2 only draws here; g1 also wins, slower. Claim the open flank. (pos "43")</dd>
+    <dt>e1 (snuggle right)</dt>
+    <dd><strong>b1.</strong> Mirror of the above; d2/e2 draw only. (pos "45")</dd>
+    <dt>b1 (wide left)</dt>
+    <dd><strong>b2 or f1.</strong> Note d2 is only a draw here too. (pos "42")</dd>
+    <dt>f1 (wide right)</dt>
+    <dd><strong>f2 or b1.</strong> Mirror. (pos "46")</dd>
+    <dt>a1 (corner left)</dt>
+    <dd><strong>d2</strong> — fastest win on the board (+4). c/e/f/g also win. <em>Trap: b1 loses; a2 only draws.</em> (pos "41")</dd>
+    <dt>g1 (corner right)</dt>
+    <dd><strong>d2.</strong> Mirror: f1 loses, g2 draws. (pos "47")</dd>
+  </dl>
+
+  <h2>Playing second — replies to Red's opening</h2>
+  <p>From <a href="../lessons/0011-playing-second.html">Lesson 11</a>; scores are yours (Yellow's), solver-verified:</p>
+  <dl>
+    <dt>Red played d1 (strong opponent)</dt>
+    <dd><strong>d2</strong> — everything loses vs perfect play, but d2 loses slowest (−1 vs −2, corners −4; pos "4"). Then draw-hunt: shadow with Claimevens, bank even claims, kill Red's odd claims early.</dd>
+    <dt>Red played c1 / e1 (honest draw)</dt>
+    <dd>Hold with <strong>c2, d1, e1 or f1</strong> (mirror for e1); a1, b1, g1 <em>lose</em> (pos "3"). After 1.c1 d1, only c2/d2 keep <em>Red's</em> draw — five moves lose for Red (pos "34"). Hold and let them trip.</dd>
+    <dt>Red played b1 / f1 (you win)</dt>
+    <dd><strong>c1 only</strong> (e1 vs f1) — the single winning reply (+1); d1 and the cap merely draw (pos "2"). <em>The center is not always the punish.</em></dd>
+    <dt>Red played a1 / g1 (you win faster)</dt>
+    <dd><strong>b1 or d1</strong> (f1/d1 vs g1), both +2. <em>Traps: e1 and a2 lose (−1)</em> — loitering near the center or capping the corner both throw the win (pos "1").</dd>
+  </dl>
+
+  <h2>Past move three</h2>
+  <p>Stop memorizing. Play the <a href="cheat-sheet.html">field guide</a>: quiet structure (<a href="../lessons/0002-the-seven-trap.html">stacks</a>), claims on odd rows (<a href="../lessons/0003-odd-and-even-threats.html">parity</a>), then win the <a href="../lessons/0004-zugzwang.html">count</a>. To autopsy a real game, replay it move by move at <a href="https://connect4.gamesolver.org">gamesolver.org</a> and find where the evaluation flipped.</p>
+
+  <footer>
+    Part of the <a href="../index.html">Connect 4 strategy course</a> · From <a href="../lessons/0005-opening-play.html">Lesson 5, Opening Play</a> · Print me.
+  </footer>
+</main>
+</body>
+</html>

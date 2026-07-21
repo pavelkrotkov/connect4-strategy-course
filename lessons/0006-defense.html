@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 6 · Defense</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 6 · ~10 minutes</div>
+  <h1>Defense</h1>
+  <p class="subtitle">The whole course, played from the other side of the board.</p>
+
+  <div class="aside">Check-in: five lessons in. If the living-room games have produced a story — a win via a stack, a kid who found the poisoned column, a suspiciously graceful loss — tell your teacher in chat. It tunes what comes next.</div>
+
+  <h2>Warm-up (20 seconds, from Lesson 5)</h2>
+  <div id="warmup"></div>
+
+  <h2>The five-question scan</h2>
+  <p>Good defense isn't a mood ("play carefully") — it's a fixed scan you run <em>every single move</em>, in this order, before your disc leaves your hand:</p>
+  <p><strong>1. Can I win right now?</strong> Take it. (Yes, people miss these.)<br>
+  <strong>2. Can they win right now?</strong> Block it — this outranks everything below.<br>
+  <strong>3. Does my move hand them a win on top?</strong> Look at the square <em>above</em> where your disc lands. If it completes anything of theirs, the move is a gift. (<a href="../reference/glossary.html#stacked">Lesson 2's poison</a>, seen from below.)<br>
+  <strong>4. Are they building?</strong> Pairs with two open ends (<a href="0001-the-double-threat.html">Lesson 1</a>), a 7 taking shape (<a href="0002-the-seven-trap.html">Lesson 2</a>). Kill structure while it's cheap.<br>
+  <strong>5. Is the threat even real?</strong> Check the window isn't already dead (your disc in it) and check the claim's parity (<a href="0003-odd-and-even-threats.html">Lesson 3</a>). Blocking dead or wrong-parity threats wastes the tempo that loses endgames.</p>
+  <p>Questions 1–2 are reflexes you have. The drills below train 3, 4, and 5 — including the two ways a "safe-looking block" quietly costs you a game you'd already won. <span class="cite">(Drill evaluations verified against <a href="https://connect4.gamesolver.org">the perfect solver</a> — paste position strings 4526 and 3534 there to check drills 1 and 2 yourself; drills 3 and 4 are structural and verified by hand.)</span></p>
+
+  <h2>Drill 1 — Is it even real? (question 5)</h2>
+  <div id="d1"></div>
+
+  <h2>Drill 2 — Block on the right side (questions 4 + 5)</h2>
+  <p>Here the pair <em>is</em> real: d1–e1 with the d–g window wide open. Two different moves block that window. The solver says they are not remotely equal. <strong>Find the block that also keeps your winning game.</strong></p>
+  <div id="d2"></div>
+
+  <h2>Drill 3 — The gift (question 3)</h2>
+  <div id="d3"></div>
+
+  <h2>Drill 4 — Kill the 7 in the crib (question 4)</h2>
+  <p>Yellow has four of the five discs of a "7". You know from Lesson 2 what happens if it gets finished. <strong>One move answers it directly — click that column.</strong></p>
+  <div id="d4"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>Run the scan out loud <em>once</em> with your kid — "can I win? can you win? am I giving you anything? what are you building? is it real?" — then never again; let them catch <em>you</em> skipping steps. That's coaching gold. And note what the scan does to your handicap toolkit: skipping question 4 on purpose (never killing their structure early, only ever blocking completed threes) makes you a genuinely beatable opponent who never looks like they're trying to lose.</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> the <a href="https://connect4.gamesolver.org">perfect solver</a> again — after any game where you got trapped, replay it and ask at each move which scan question you skipped. For the theory of <em>why</em> wrong-parity blocks waste tempi, re-skim <a href="https://web.mit.edu/sp.268/www/2010/connectFourSlides.pdf">MIT's slides</a> on useless threats.</p>
+
+  <footer>
+    <p>The <a href="../reference/cheat-sheet.html">field guide</a> now closes with the five-question scan. Previously: <a href="0005-opening-play.html">Lesson 5, Opening Play</a>. Next: <a href="0007-coaching-your-kid.html">Lesson 7, Coaching Your Kid</a>.</p>
+    <p>Got trapped in a real game and can't see which question you missed? Describe the position to an AI assistant and ask it to run the scan with you.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Warm-up: solver pos "4" -> [-4,-2,-2,-1,-2,-2,-4]. d2 is the least-bad reply.
+  C4.choice(document.getElementById('warmup'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '...Y...'
+    ],
+    prompt: 'Role reversal: your kid learned Lesson 5 and grabbed d1 first. Your best practical reply?',
+    options: [
+      { label: 'Stack d2 immediately', correct: true,
+        explain: 'Against perfect play every reply now loses — but d2 loses slowest (solver: −1 vs −2 elsewhere, −4 in the corners), and it takes the best square still on offer: d2 sits in 10 windows and denies Red the central d1–d2 tower. Maximum drawing chances against a human.' },
+      { label: 'Snuggle at c1/e1', correct: false,
+        explain: 'Solver: −2 — worse than d2’s −1. When you can’t have the best column, sit on top of it: d2 is the most connected square still available (10 windows) and keeps the game defensible.' },
+      { label: 'Take a corner square', correct: false,
+        explain: 'Solver: −4, the fastest loss on the board. Corners are where second players go to lose quickly — fight for the center even when you’re behind.' }
+    ]
+  });
+
+  // Drill 1: solver pos "4526" -> [2,3,2,4,2,3,0]. The e1-f1 "pair" is dead
+  // (window d-g runs through Red's d1); blocking at g even drops the win to a draw.
+  C4.choice(document.getElementById('d1'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.R.RYY.'
+    ],
+    prompt: 'Yellow just made the e1–f1 pair, looking dangerous. Do you block?',
+    options: [
+      { label: 'Yes — block at g1', correct: false,
+        explain: 'The costliest "safe" move on the board: solver says g1 drops your forced win to a DRAW. Look at the window d–g: your own d1 is already in it. The pair was dead on arrival.' },
+      { label: 'No — stack d2 instead', correct: true,
+        explain: 'Right. Every 4-window through e1–f1 either runs off the board or through your d1 disc — the pair threatens nothing, ever. Solver: d2 is the fastest win (+4); the panic-block g1 only draws. Question 5 before question 2.' },
+      { label: 'Yes — cap it at f2', correct: false,
+        explain: 'Still winning (+3), but for the wrong reason — f2 happens to be a decent square, not a needed block. The pair is dead: window d–g contains your d1. Check whether a threat is real before spending a move on it.' }
+    ]
+  });
+
+  // Drill 2: solver pos "3534" -> [0,-2,2,-2,1,2,0]. f1 blocks the live d-g
+  // window AND keeps the win (+2); g1 blocks the same window but only draws.
+  C4.puzzle(document.getElementById('d2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '..R....',
+      '..RYY..'
+    ],
+    prompt: 'Red to move. Kill the d–e pair — and keep your win.',
+    correct: [5],
+    success: 'f1 — splits the live d–g window AND takes useful central space: solver +2, your win stands. Compare g1: it blocks the very same window, yet the solver scores it a mere draw — a block in a dead corner buys nothing else. When two blocks kill one threat, take the one that helps YOUR game.',
+    wrong: 'The d–e pair grows into an open formation and the defense arrives too late — the solver scores that move a loss (−2).',
+    wrongByCol: {
+      0: 'a1 neither touches the pair nor builds anything — the solver calls it a dead draw (0). Not losing, but you had a win to keep.',
+      6: 'g1 does block the d–g window — but the solver scores it 0, a draw, versus +2 for the other block. A corner block defuses the threat and builds nothing. Same job, better square: try again.',
+      2: 'c3 is actually still winning (+2) — your vertical three would force Yellow to respond — but it ignores the pair and wins on tempo tricks, not defense. The drill: address the threat directly, on the profitable side.',
+      4: 'e2 keeps a win too (+1), but slower, and it leaves the bottom pair alive. Block the window itself — on the side that’s worth having.'
+    }
+  });
+
+  // Drill 3 (hand-verified): Yellow diagonal a1-b2-c3 claims d4 (even row —
+  // Yellow's parity, so it's real). Column d currently holds 2 discs: playing
+  // d lands on d3 and floors the claim.
+  C4.choice(document.getElementById('d3'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '..Y....',
+      '.YRR...',
+      'YRYR...'
+    ],
+    threats: [[2, 3]],
+    prompt: 'Yellow’s diagonal a1–b2–c3 claims d4 (marked). Which column must you not touch?',
+    options: [
+      { label: 'Column c', correct: false,
+        explain: 'Column c is fine — your disc lands on c4 and the square above it (c5) completes nothing for Yellow. The danger is the column where your disc becomes their floor.' },
+      { label: 'Column d', correct: true,
+        explain: 'Yes — d holds two discs, so your disc lands on d3, and d4 becomes playable: Yellow wins on the spot. Worse, d4 is row 4 — even — Yellow’s parity, so this claim never expires on its own. Question 3: always look one square above your landing spot.' },
+      { label: 'Column e', correct: false,
+        explain: 'e1 is harmless — nothing above it belongs to Yellow. The gift column is the one where your disc lands directly beneath their claimed square.' }
+    ]
+  });
+
+  // Drill 4 (hand-verified, Lesson 2's build position with colors flipped):
+  // Yellow has b1,c2,c3,d3 — b3 completes both the bar and the stack. Red must
+  // take b3 (lands there: b1, b2 filled).
+  C4.puzzle(document.getElementById('d4'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '..YY...',
+      '.RYR...',
+      '.YRR...'
+    ],
+    prompt: 'Red to move. Stop the 7 before it exists.',
+    correct: [1],
+    success: 'b3 — the corner disc of their 7 will never arrive, so the lethal e3/e4 stack never forms. Note what remains: the diagonal b1–c2–d3 still claims e4, an even-row square — Yellow-parity, real (Lesson 3). You’ve defused the bomb, not the game: keep an eye on column e.',
+    wrong: 'Yellow answers b3 and the 7 is complete — bar plus diagonal, stacked threats at e3/e4, and you’re on the wrong side of Lesson 2. Structure must die young.',
+    wrongByCol: {
+      4: 'e1 is actually forcing — it makes your own c1–d1–e1 three, Yellow must block f1, and you could still take b3 after. A playable detour, but the drill is the direct answer: kill the 7 at its missing corner.',
+      5: 'f1 forces too (split three c1–d1–_–f1, threat at e1), and b3 can still follow — but why take the scenic route? The direct answer kills the formation right now.'
+    },
+    threats: [[2, 4]]
+  });
+
+});
+</script>
+</body>
+</html>

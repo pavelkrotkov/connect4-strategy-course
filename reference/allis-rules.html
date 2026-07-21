@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Allis's Nine Rules</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Reference</div>
+  <h1>Allis's Nine Strategic Rules</h1>
+  <p class="subtitle">The certificates that solved the game. Each rule guarantees "the controller of the zugzwang" (the player content to wait — usually the defender) certain squares, thereby <em>refuting</em> enemy groups. Cover every enemy group with compatible certificates and the position is decided. Extracted from <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis (1988), ch. 6</a>.</p>
+
+  <h2>The four elementary observations</h2>
+  <dl>
+    <dt>1 · Claimeven</dt>
+    <dd><strong>Needs:</strong> two stacked empty squares, upper one <em>even</em>. <strong>Guarantee:</strong> the controller takes the even square, by answering on top when the odd one is played. <strong>Refutes:</strong> every enemy group using that even square. <em>Course echo: Lesson 3's shadowing — this is it, formalized.</em></dd>
+    <dt>2 · Baseinverse</dt>
+    <dd><strong>Needs:</strong> two <em>directly playable</em> squares. <strong>Guarantee:</strong> the opponent can't take both in one turn, so the controller gets at least one. <strong>Refutes:</strong> only groups needing <em>both</em> squares.</dd>
+    <dt>3 · Vertical</dt>
+    <dd><strong>Needs:</strong> two stacked empty squares, upper one <em>odd</em>. <strong>Guarantee:</strong> at least one of the two. <strong>Refutes:</strong> groups needing both (necessarily vertical ones). <em>Course echo: why towers are noise (Lesson 3).</em></dd>
+    <dt>4 · Lowinverse</dt>
+    <dd><strong>Needs:</strong> two columns, each with two stacked empties, both uppers <em>odd</em>. <strong>Guarantee:</strong> odd + odd = even total, so the opponent enters first; the controller gets at least one of the two odd uppers (plus Vertical side-effects). <strong>Refutes:</strong> groups needing both uppers. <em>Course echo: Lesson 4's neutral-square counting.</em></dd>
+  </dl>
+
+  <h2>The two workhorses (born from VICTOR's failures)</h2>
+  <dl>
+    <dt>5 · Aftereven</dt>
+    <dd><strong>Needs:</strong> a group of your own completable using <em>only</em> the even squares of Claimevens (the "Aftereven group"). <strong>Guarantee:</strong> you will eventually complete it — and in whichever column finishes it, the opponent never gets a square above it. <strong>Refutes:</strong> enemy groups needing a square above the Aftereven group in <em>every column where the group still needs a disc</em> (already-filled columns don't count). <em>A win that doubles as a barricade.</em></dd>
+    <dt>6 · Before</dt>
+    <dd><strong>Needs:</strong> a group of yours with no enemy discs, whose empty squares avoid the top row. <strong>Guarantee:</strong> for each empty square — take it, or instantly take the square <em>above</em> it when the opponent plays it. Either you complete the group (game over) or the opponent can never collect <em>all</em> the successor squares. <strong>Refutes:</strong> enemy groups needing all the successors. Allis: costliest rule to compute, biggest jump in strength.</dd>
+  </dl>
+
+  <h2>The long tail</h2>
+  <dl>
+    <dt>7 · Highinverse</dt>
+    <dd>Lowinverse extended one square up: two columns × three stacked empties, uppers <em>even</em>. Guarantees a square from the uppers-pair and from the middles-pair, plus each column's own top-two vertical, plus cross-effects when a bottom square is playable. Added when Lowinverses caused trouble just above their own squares.</dd>
+    <dt>8 · Baseclaim</dt>
+    <dd>Three playable squares + an even square above the second: an <em>adaptive</em> certificate that becomes a Baseinverse or a Claimeven depending on the opponent's choice. Refutes two families of groups at once.</dd>
+    <dt>9 · Specialbefore</dt>
+    <dd>A Before whose group includes a directly playable square, paired with another playable square <em>in a different column</em>. Its Before-style refutation narrows: enemy groups must need all the successors <em>and</em> the extra playable square; in exchange it adds Baseinverse-style coverage of the two playables. Added last alongside Baseclaim; Allis rates their impact "probably not significant."</dd>
+  </dl>
+
+  <p class="aside"><strong>The origin story (§6.10):</strong> the nine weren't derived — they were <em>debugged</em>. The four elementary rules came from player experience; every failure of VICTOR (Allis's program) on a position he could see was safe produced a new rule — Aftereven, then Before, then the tail — until the failures stopped. "No search for extra rules was made." The list is nine because nine was enough.</p>
+
+  <p><strong>Compatibility (ch. 7):</strong> certificates can't overlap on squares with conflicting promises — the thesis's second half is the bookkeeping of which instances may be used together. This is the machinery behind every "it's finicky" in this course.</p>
+
+  <footer>
+    Part of the <a href="../index.html">Connect 4 strategy course</a> · From <a href="../lessons/0009-allis-nine-rules.html">Lesson 9</a> · Companions: <a href="glossary.html">glossary</a> · <a href="cheat-sheet.html">field guide</a> · Print me.
+  </footer>
+</main>
+</body>
+</html>

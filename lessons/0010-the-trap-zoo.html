@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 10 · The Trap Zoo</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 10 · ~9 minutes</div>
+  <h1>The Trap Zoo</h1>
+  <p class="subtitle">The 7 is not a trap. It's one animal in a genus — and you're about to recognize the whole family.</p>
+
+  <h2>Warm-up (15 seconds, from Lesson 2)</h2>
+  <div id="warmup"></div>
+
+  <h2>The idea: one anatomy, many bodies</h2>
+  <p>Everything this course calls a trap has the same skeleton: <strong>two of your lines whose empty finishing squares sit stacked in one column</strong>. Blocking the lower square floors the upper one (<a href="0002-the-seven-trap.html">Lesson 2</a>); owning both makes the stack parity-proof (<a href="0008-threats-sharing-a-column.html">Lesson 8</a>). The 7 — a row plus a rising diagonal — is just the easiest body to build around that skeleton. Any two lines that can finish one-above-the-other work: two diagonals, a diagonal over a row, a diagonal coming down from above. Recognition is shape-specific, so today is a gallery visit: four new bodies, same skeleton. <span class="cite">(Every position below was constructed for this course and machine-verified — legal, no accidental threats, claims exactly as labeled. Mechanism: <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis 1988</a>, threats chapter.)</span></p>
+
+  <h2>Exhibit 1 — The Rails</h2>
+  <p>Two <em>parallel</em> diagonals, one row apart — the fat diagonal band that kids (and adults) build half by accident. Each rail finishes in the same column, one square above the other. Red has just built this; you're coaching Yellow. <strong>Which column is lava?</strong></p>
+  <div id="e1"></div>
+
+  <h2>Exhibit 2 — The Hook</h2>
+  <p>The 7 builds its stack from below — bar plus a diagonal <em>rising</em> to the column. The hook builds the same stack from <em>above</em>: a bar plus a diagonal <em>descending</em> onto the column from the right. Study it — no drill, just read the skeleton:</p>
+  <div id="e2"></div>
+  <p>The bar (b3–c3–d3) claims a3 and e3; the descending diagonal (d5–f3–g2, finishing at e4) stacks e4 on top of e3. Same poisoned column e as Lesson 2's diagram — built from the opposite direction. And look closely at the marks on the left: this build quietly created a <em>second</em> stack, a3/a4, via the down-diagonal d1–c2–b3. Two poisoned columns from one quiet shape.</p>
+
+  <h2>Exhibit 3 — The X</h2>
+  <p>Two diagonals <em>crossing</em>: one rising to d4, one descending to d5. The stack is loaded and Yellow can't see it. <strong>Force the win in two.</strong></p>
+  <div id="e3"></div>
+
+  <h2>Exhibit 4 — The Mirage</h2>
+  <p>The expert's real skill isn't spotting traps — it's <em>rejecting fakes</em>. Here Red has two menacing diagonals again, rising from the left and descending from the right. Look carefully at where each one finishes.</p>
+  <div id="e4"></div>
+
+  <h2>The universal test</h2>
+  <p>Don't memorize the gallery. Run the skeleton check on <em>any</em> scary shape, yours or theirs: <strong>trace each three-disc line to its empty finishing square.</strong> Two squares, same column, stacked → real trap, treat per Lessons 2 and 8. Two lines pointing at <em>one</em> square → one claim wearing a costume; a single block (or the wrong parity) kills it. Two squares in different columns → not a trap at all, just claims — audit them: alive, lowest, parity (<a href="0008-threats-sharing-a-column.html">Lesson 8</a>).</p>
+
+  <h2>Take it to the living room</h2>
+  <p>Two field notes. First: the rails are the trap your kid will build <em>by accident</em> — kids love laying discs along a diagonal wall. When it happens, don't dodge it silently; lose to it once, honestly, then replay the column ("where did both your lines finish?") — that's the discovery version of this whole lesson. Second: your own scan (<a href="0006-defense.html">Lesson 6</a>, question 4) just got an upgrade — "what are they building?" now means <em>trace their lines to the finish squares</em>, not "does it look like a 7?"</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source:</strong> the skeleton is Allis's threat theory (<a href="https://tromp.github.io/c4/connect4_thesis.pdf">thesis</a>, threats chapter); the gallery itself is original to this course — printable as the new <a href="../reference/trap-zoo.html">trap zoo card</a>. To hunt wild specimens, replay any real game on <a href="https://connect4.gamesolver.org">the solver</a> and look at the move where the evaluation jumped: there's usually an animal from this zoo standing there.</p>
+
+  <footer>
+    <p>New reference: the <a href="../reference/trap-zoo.html">trap zoo card</a> · glossary: <a href="../reference/glossary.html#mirage">false trap</a>. Previously: <a href="0009-allis-nine-rules.html">Lesson 9, Allis's Nine Rules</a>. Next: <a href="0011-playing-second.html">Lesson 11, Playing Second</a>.</p>
+    <p>Found a shape in a real game that isn't in the zoo? Describe it to an AI assistant and ask it to trace the skeleton with you.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  C4.choice(document.getElementById('warmup'), {
+    prompt: 'Recall: the 7 trap is unstoppable because its two claim squares are —',
+    options: [
+      { label: 'In the same column', correct: true,
+        explain: 'Stacked: blocking the lower square floors the upper one. Hold that skeleton in mind — every animal in today’s zoo has it.' },
+      { label: 'On the same row', correct: false,
+        explain: 'Same-row threats (Lesson 1’s open three) are a DOUBLE threat — strong, but each can be blocked; you win on count, not on poison. The 7’s squares are stacked in one COLUMN.' },
+      { label: 'On odd rows only', correct: false,
+        explain: 'Parity is the endgame currency (Lesson 3) — but the stack doesn’t need it: blocking low floors high, whatever the rows. That’s why stacks are parity-proof.' }
+    ]
+  });
+
+  // Exhibit 1 — RAILS. Two parallel rising diagonals: a1-b2-c3 (claims d4)
+  // and a2-b3-c4 (claims d5). Script-verified: Red claims exactly {d4,d5}.
+  C4.choice(document.getElementById('e1'), {
+    board: [
+      '.......',
+      '.......',
+      '..R....',
+      '.RR....',
+      'RRY....',
+      'RYY..YY'
+    ],
+    threats: [[2, 3], [1, 3]],
+    prompt: 'Red’s diagonal band. Which column must Yellow never touch?',
+    options: [
+      { label: 'Column c', correct: false,
+        explain: 'Column c is already tall and spent — a Yellow disc lands on c5 and floors nothing of Red’s. The rails don’t finish here; they finish one column to the right.' },
+      { label: 'Column d', correct: true,
+        explain: 'Both rails finish in column d: the lower diagonal at d4, the upper at d5 — stacked. Any Yellow disc in d hurries the column toward d4, and blocking d4 floors d5. Same poison as the 7, no 7 in sight.' },
+      { label: 'Column a', correct: false,
+        explain: 'Column a is exhausted — Red’s own discs fill its working squares, and a Yellow disc at a3 floors nothing. Trace the diagonals: they point rightward, at d.' }
+    ]
+  });
+
+  // Exhibit 2 — HOOK (static). Bar b3-c3-d3 + descending diagonal d5-e4-f3-g2.
+  // Script-verified claims: e3/e4 stacked AND a3/a4 stacked (via b3-c2-d1 down-diagonal).
+  C4.board(document.getElementById('e2'), {
+    board: [
+      '.......',
+      '...R...',
+      '...Y...',
+      '.RRR.RY',
+      '.YRY.YR',
+      'YYYR.YR'
+    ],
+    threats: [[3, 0], [2, 0], [3, 4], [2, 4]],
+    caption: 'The hook: bar b3–c3–d3 + diagonal d5–f3–g2 descending onto e4. Marked: the e3/e4 stack — and the bonus a3/a4 stack the build created for free.'
+  });
+
+  // Exhibit 3 — X. Rising a1-b2-c3 (claims d4) x descending e4-f3-g2 (claims d5).
+  // Script-verified: unique forcing move d (lands d3); block d4 -> win d5.
+  C4.puzzle(document.getElementById('e3'), {
+    board: [
+      '.......',
+      '.......',
+      '....R..',
+      '..R.YR.',
+      'YRYRYRR',
+      'RYYRYYY'
+    ],
+    prompt: 'Red to move. Force the win in two.',
+    correct: [3],
+    success: 'd3 loads the crossing: you now threaten d4 (rising diagonal a1–b2–c3–d4, plus your fresh d-tower). Yellow must block d4 — flooring d5, where the descending diagonal d5–e4–f3–g2 lands the kill. Two diagonals, one column, no escape.',
+    wrong: 'Nothing forced — Yellow breathes. Both your diagonals finish in the same column; find the move that makes the lower finishing square playable-next.',
+    wrongByCol: {
+      5: 'f4 stacks a vertical three (f2–f3–f4) — one threat, one cap at f5. The crossing point of your two diagonals is elsewhere.',
+      4: 'e5 sits above the battle and touches nothing. Trace both diagonals to where they finish: which column do they share?',
+      2: 'c4 thickens the rising rail but forces nothing — and your trap needs no more discs, only the trigger.'
+    },
+    threats: [[2, 3], [1, 3]]
+  });
+
+  // Exhibit 4 — MIRAGE. Rising a1-b2-c3 and descending e3-f2-g1 BOTH finish at d4.
+  // Script-verified: exactly one Red claim (d4), reached by two windows.
+  C4.choice(document.getElementById('e4'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '..R.R..',
+      'YRY.YRY',
+      'RYY.RYR'
+    ],
+    threats: [[2, 3]],
+    prompt: 'Two Red diagonals converge. Is this a trap?',
+    options: [
+      { label: 'Yes — it is unstoppable', correct: false,
+        explain: 'Trace the finishing squares: the rising diagonal ends at d4… and so does the descending one. Two windows, ONE square — a single claim in a scary costume. One Yellow disc on d4, when it comes due, kills both lines at once.' },
+      { label: 'No — one square holds both', correct: true,
+        explain: 'Exactly. Both diagonals finish at d4, so this is one claim, not a stack — the skeleton check fails. And it gets worse for Red: d4 is row 4, even — the first player’s wrong parity (Lesson 3). Menacing to look at, worth almost nothing.' },
+      { label: 'Yes — but only for Yellow', correct: false,
+        explain: 'The lines are Red’s, so any value here is Red’s — but there isn’t much: both windows finish on the SAME square (d4), making one blockable, wrong-parity claim. The mirage fools defenders into panic and attackers into overconfidence alike.' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

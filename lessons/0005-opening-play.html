@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5 · Opening Play</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+<script src="../assets/c4sim.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 5 · ~9 minutes</div>
+  <h1>Opening Play</h1>
+  <p class="subtitle">Why the first move is d — and the three replies you'll actually see across the kitchen table.</p>
+
+  <p class="aside" style="border-left-color:#8b2500">Every evaluation in this lesson ("wins", "draws", "loses") is perfect-play truth, queried directly from <a href="https://connect4.gamesolver.org">Pascal Pons' perfect solver</a> — not strategy-guide folklore. You can paste any line into that site and check me.</p>
+
+  <h2>Warm-up (20 seconds, from Lesson 4)</h2>
+  <div id="warmup"></div>
+
+  <h2>Why d, precisely</h2>
+  <p>Two reasons, one shallow and one deep. The shallow one is geometry: the board has exactly 69 four-in-a-row windows, and 51 of them touch column d — versus 39 for c/e, 27 for b/f, and a mere 15 for an edge column. The two most connected squares on the whole board are d3 and d4, sitting in 13 windows each. <span class="cite">(Counted exhaustively by script for this course; you can verify with pencil and patience.)</span></p>
+  <p>The deep reason is Lesson 3's: to win, Red must <em>bank an odd claim</em>, and claims need windows. Starting at d1 grabs the square with the most windows on the bottom (odd!) row and is the only start from which Red can force such a claim against best defense. The solver's verdict on all seven first moves:</p>
+  <p style="text-align:center"><strong>d → Red wins · c, e → draw · b, f → Red loses · a, g → Red loses fastest</strong></p>
+  <p>Yes: with perfect play on both sides, opening on the edge doesn't just waste the advantage — it hands the win to the second player. <span class="cite">(<a href="https://connect4.gamesolver.org">gamesolver.org</a>; first proved by <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis, 1988</a>.)</span></p>
+  <p>And after 1.&nbsp;d1? <strong>Every Yellow reply loses.</strong> The most stubborn defense is d2 (it loses slowest); the edges a1/g1 lose fastest. Your job is knowing how to punish the replies you'll actually meet.</p>
+
+  <h2>Drill 1 — They copy you (best defense)</h2>
+  <p>Your kid plays d2 right on top of you. Careful: this is the one position in this lesson where <strong>only one move keeps the win</strong> — the solver scores every alternative as a loss for Red.</p>
+  <div id="d1"></div>
+
+  <h2>Drill 2 — The snuggle (c1)</h2>
+  <p>The most common casual reply: a disc next to yours. The punish is genuinely non-obvious — and the "natural" center stack is a trap.</p>
+  <div id="d2"></div>
+
+  <h2>Drill 3 — The corner kid (a1)</h2>
+  <p>Small opponents love corners. Several moves win here, but one is fastest — and one very plausible-looking move actually <em>loses</em>.</p>
+  <div id="d3"></div>
+
+  <h2>Capstone — play a full game</h2>
+  <p>Everything, from move one. Yellow here plays like an attentive kid: it takes any win, blocks any three you complete, and otherwise fills safely — so single threats won't beat it. Open at d, build structure (Lesson 2), bank the right parity (Lesson 3), and convert (Lessons 1 and 4). It plays differently every reset. One honest note: this Yellow only sees squares that win or lose <em>this turn</em> — it cannot read a banked claim. Neither can most kids. That blindness is exactly why banking works.</p>
+  <div id="sim"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>Memorize exactly three sentences: <em>copy-me gets d3; a snuggle gets the far flank (c1→f1, e1→b1); a corner gets the center stack (d2 — and never play beside their corner).</em> Past move three, stop remembering and start playing the course: structure, parity, count. For the graceful losses you now have the earliest lever of all — open at c or e instead of d, and the game is an honest draw from move one; nobody can tell you gave anything away.</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> <a href="https://connect4.gamesolver.org">connect4.gamesolver.org</a> — a perfect solver with a clickable board. After any real game that surprised you, replay the line there and find the exact move where the evaluation flipped; it's the best post-game coach that exists. The compressed version of this lesson lives in the new <a href="../reference/openings.html">openings card</a>.</p>
+
+  <footer>
+    <p>Reference: <a href="../reference/openings.html">openings card</a> · <a href="../reference/cheat-sheet.html">field guide</a> · <a href="../reference/glossary.html">glossary</a>. Previously: <a href="0004-zugzwang.html">Lesson 4, Zugzwang</a>. Next: <a href="0006-defense.html">Lesson 6, Defense</a>.</p>
+    <p>Beaten by the capstone Yellow, or curious why f1 punishes c1? Ask an AI assistant to query the solver on the line and unpack it.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  C4.choice(document.getElementById('warmup'), {
+    prompt: 'Recall from Lesson 4 — flipped: FOUR neutral squares remain and it is your turn. Who gets squeezed?',
+    options: [
+      { label: 'You are forced first', correct: true,
+        explain: 'Even count on your move: they take neutrals 2 and 4, and after the last one it is YOUR turn with nothing safe left. Fix it before the endgame locks — burn a tempo or make a fresh threat.' },
+      { label: 'They are forced first', correct: false,
+        explain: 'That was the ODD case (Lesson 4’s sim had 3). With four neutrals on your turn, the last safe square is theirs and the forced move is yours.' },
+      { label: 'Neither — four is safe', correct: false,
+        explain: 'No count is "safe" — someone always runs out first. Even count on your move means it’s you: the last neutral square goes to them.' }
+    ]
+  });
+
+  // Solver: pos "44" -> scores [-3,-3,-2,1,-2,-3,-3]. Only d wins.
+  C4.puzzle(document.getElementById('d1'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '...Y...',
+      '...R...'
+    ],
+    prompt: 'You played d1, Yellow answered d2. Keep the forced win.',
+    correct: [3],
+    success: 'd3 — the ONLY winning move (solver: every other column scores as a Red loss from here). The main line begins as a tower: whoever owns d3, the board’s most connected square, owns the middlegame.',
+    wrong: 'Hard to believe, but with perfect play that move LOSES from this position. After d1–d2, exactly one move keeps Red’s win: paste "44" into gamesolver.org and see.'
+  });
+
+  // Solver: pos "43" -> scores [-3,-3,0,0,-2,2,1]. Wins: f (+2), g (+1).
+  C4.puzzle(document.getElementById('d2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '..YR...'
+    ],
+    prompt: 'You played d1, Yellow snuggled at c1. Punish it.',
+    correct: [5, 6],
+    success: 'f1 — the solver’s punish (g1 also wins, a bit slower). The idea: Yellow committed to your left, so you claim the open right flank, where your odd-row claims will grow unopposed. Pattern to keep: c1 → f1, and mirrored, e1 → b1.',
+    wrong: 'That loses with perfect play. Yellow leaned left — where does that leave the most room for YOUR future claims?',
+    wrongByCol: {
+      3: 'The natural center stack — but from here it only DRAWS with perfect play (solver: 0). The punish lies on the open flank.',
+      2: 'Capping their disc holds the balance but wins nothing — a perfect-play draw. You can do better than equality here.'
+    }
+  });
+
+  // Solver: pos "41" -> scores [0,-2,2,4,3,3,2]. Best: d (+4); b LOSES (-2).
+  C4.puzzle(document.getElementById('d3'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      'Y..R...'
+    ],
+    prompt: 'You played d1, Yellow went to the corner. Fastest punish?',
+    correct: [3],
+    success: 'd2 — the corner move wasted a tempo, and the fastest use of your gift is stacking the free center (solver: +4, the quickest win on the board). d3 next if allowed.',
+    wrong: 'That wins too — the corner reply is that bad — but the drill is the fastest, most principled punish: when Yellow ignores the center, take MORE of it.',
+    wrongByCol: {
+      1: 'Astonishingly, b1 LOSES with perfect play (solver: −2) — crowding their corner opens counterplay on your weak left. The one wrong way to punish a corner.',
+      0: 'Capping the corner only draws (solver: 0) — you’re spending your tempo where nothing will ever grow.'
+    }
+  });
+
+  C4.sim(document.getElementById('sim'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......'
+    ],
+    intro: 'Full game — you are Red. Yellow takes wins, blocks completed threes, and otherwise fills safely.',
+    showCounter: false,
+    messages: {
+      yourTurn: 'Your move, Red.',
+      safe: c => `Yellow plays ${'abcdefg'[c]}.`,
+      block: c => `Yellow blocks at ${'abcdefg'[c]} — single threats won’t land. You need two (Lesson 1) or a stack (Lesson 2).`,
+      zugzwang: c => `Yellow is out of safe moves — ${'abcdefg'[c]} is forced. Your structure did this.`,
+      win: 'Won. Trace it back: double threat, stack, or squeeze — which lesson landed the blow?',
+      lose: 'Yellow wins — an attentive blocker punishes structureless attacking. Reset: d first, build quiet threes, THEN convert.',
+      draw: 'A draw against a simple blocker means no claim ever got banked. Reset — and this time make one three-in-a-row whose empty square sits on an odd row.'
+    }
+  });
+
+});
+</script>
+</body>
+</html>

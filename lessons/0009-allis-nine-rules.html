@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 9 · Allis's Nine Rules</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 9 · ~10 minutes · theory capstone</div>
+  <h1>Allis's Nine Rules</h1>
+  <p class="subtitle">The actual machinery of the 1988 solution — and the discovery that you already know half of it.</p>
+
+  <h2>Warm-up (15 seconds, from Lesson 8)</h2>
+  <div id="warmup"></div>
+
+  <h2>The idea: certificates, not moves</h2>
+  <p>Everything in this lesson comes straight from chapter 6 of the thesis — I extracted the definitions from the source rather than paraphrasing folklore, and the full table lives on the new <a href="../reference/allis-rules.html">nine-rules card</a>. <span class="cite">(<a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis, <em>A Knowledge-based Approach of Connect-Four</em>, 1988, ch. 6–7</a>)</span></p>
+  <p>Here's the reframe that makes the thesis readable. Allis doesn't prove positions by searching moves — he proves them with <strong>certificates</strong>. Each rule is a small, local guarantee of the form: <em>"the player who is content to wait can be sure of getting certain squares."</em> A guaranteed square <strong>refutes</strong> every enemy four-window that needs it. Show that a compatible set of certificates refutes <em>every</em> enemy window, and the position is mathematically decided — no search, no lines, no "and then if they play here."</p>
+  <p>You already own the two most important certificates without knowing their names. <strong>Claimeven</strong> — answer on top, collect the even square — is Lesson 3's shadowing. <strong>Vertical</strong> is why towers are noise. The others are variations on three motifs: <em>you can't play two squares in one turn</em> (Baseinverse; Baseclaim, its hybrid with Claimeven), <em>odd + odd = even</em> (Lowinverse, Highinverse — Lesson 4's counting, weaponized), and the elegant one you haven't met: the <strong>Before</strong> family — "for every empty square of my own group, I either take it or instantly take the square above it; either I win or they can never collect all the successor squares." Aftereven is its all-even special case, a win that doubles as a barricade.</p>
+
+  <h2>Check 1 — Name that certificate</h2>
+  <div id="p1"></div>
+
+  <h2>Check 2 — What exactly does it refute?</h2>
+  <p>The crunchy detail separating the rules — and the source of all the compatibility bookkeeping:</p>
+  <div id="p2"></div>
+
+  <h2>The origin story</h2>
+  <p>The nine weren't handed down from mathematics. Allis's §6.10 is candid: the four elementary rules came from playing experience; then his program VICTOR kept failing to prove positions he could <em>see</em> were safe, and each failure was debugged into a new rule — Aftereven, then Before ("a major improvement", also the most expensive to compute), then Highinverse, then the last two, whose impact he rates "probably not significant." Then the failures stopped, and he stopped: <em>"no search for extra rules was made."</em> The most famous result in the game's history is, structurally, a debugging log — nine rules because nine was enough.</p>
+
+  <h2>Check 3 — The meta-question</h2>
+  <div id="p3"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>This thread is for you, not the kids — but it does produce one practical gift: you can now read the thesis's endgame diagrams and <em>certify</em> a drawn position at the board, the way you certify a won one. When you tell your kid "this game is a draw now, want to see why?", you can lay Claimevens across the board like receipts. That party trick is the entire 1988 proof, performed live.</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source, now genuinely readable:</strong> <a href="https://tromp.github.io/c4/connect4_thesis.pdf">the thesis</a>, chapters 6 (the rules — you'll recognize every diagram) and 7 (which certificates may be combined). Chapter 9 describes VICTOR itself. Keep the <a href="../reference/allis-rules.html">nine-rules card</a> beside you as you read. This completes the course's theory thread: threats → parity → zugzwang → basement rule → the full certificate system.</p>
+
+  <footer>
+    <p>New reference: <a href="../reference/allis-rules.html">Allis's nine rules</a> · glossary: <a href="../reference/glossary.html#nine-rules">strategic rules</a>. Previously: <a href="0008-threats-sharing-a-column.html">Lesson 8, Threats That Share a Column</a>. Next: <a href="0010-the-trap-zoo.html">Lesson 10, The Trap Zoo</a>.</p>
+    <p>Stuck on a thesis page? Quote it to an AI assistant and ask it to unpack the rule or diagram — that's how this lesson was built.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  C4.choice(document.getElementById('warmup'), {
+    prompt: 'Recall from Lesson 8 — the claim audit runs in which order?',
+    options: [
+      { label: 'Alive, lowest, parity', correct: true,
+        explain: 'Window alive? Lowest in its column? Only then parity. Keep this order in mind — the nine rules are the formal version of exactly these checks.' },
+      { label: 'Parity, alive, lowest', correct: false,
+        explain: 'Parity comes LAST — a dead window or a hostage claim makes parity irrelevant. Alive, lowest, parity.' },
+      { label: 'Lowest, parity, alive', correct: false,
+        explain: 'A dead window fails before anything else matters. Alive, lowest, parity.' }
+    ]
+  });
+
+  // Check 1: Claimeven requires the UPPER square even; upper odd -> Vertical.
+  C4.choice(document.getElementById('p1'), {
+    prompt: 'Two empty squares stacked in a column; the upper one is ODD. Which certificate applies?',
+    options: [
+      { label: 'It is a Claimeven', correct: false,
+        explain: 'Claimeven demands an EVEN upper square — that’s what makes “answer on top” collect it for the waiting player. With an odd upper square the guarantee weakens to “one of the two”: a Vertical.' },
+      { label: 'It is a Vertical', correct: true,
+        explain: 'Exactly — thesis §6.3: “the Vertical rule is only used if the upper square is odd.” You’re guaranteed one of the two squares, not the upper one specifically — which is why it refutes fewer groups than a Claimeven.' },
+      { label: 'It is a Baseinverse', correct: false,
+        explain: 'Baseinverse needs two DIRECTLY PLAYABLE squares — in different columns, this turn. Stacked squares in one column are the Claimeven/Vertical family, split by the parity of the upper square.' }
+    ]
+  });
+
+  // Check 2: Claimeven refutes ALL groups through the even square; Baseinverse
+  // only groups containing BOTH squares.
+  C4.choice(document.getElementById('p2'), {
+    prompt: 'A Baseinverse guarantees you one of two playable squares. Which enemy groups does it refute?',
+    options: [
+      { label: 'All groups through either', correct: false,
+        explain: 'Too strong — the OPPONENT moves first and picks which square you get. You can only refute what needs BOTH squares. (Claimeven is the rule that refutes everything through its square, because there you know exactly which square you’ll get.)' },
+      { label: 'Only groups needing both', correct: true,
+        explain: 'Right — you can’t choose which of the two you’ll get, so only a group requiring both is dead for sure. Compare Claimeven: it promises a SPECIFIC square, so it kills every group through it. Weaker promise, narrower refutation — that trade-off is the whole texture of chapter 6.' },
+      { label: 'Whichever groups are lowest', correct: false,
+        explain: 'Height isn’t the issue here — certainty is. The opponent picks which square you get, so only groups needing BOTH squares are certainly refuted.' }
+    ]
+  });
+
+  // Check 3: the origin story (§6.10).
+  C4.choice(document.getElementById('p3'), {
+    prompt: 'Why does the rule set have exactly nine rules?',
+    options: [
+      { label: 'Nine is provably sufficient', correct: false,
+        explain: 'No such proof exists — and Allis says more rules could be found. Nine is where his program stopped failing on positions he could see were safe: an engineering stopping point, not a theorem.' },
+      { label: 'They stopped failing there', correct: true,
+        explain: 'The honest answer, straight from §6.10: rules were added each time VICTOR couldn’t certify a position Allis could read — and “no search for extra rules was made” once it could. The solution to Connect 4 is, structurally, a debugging log.' },
+      { label: 'Borrowed from chess endgames', correct: false,
+        explain: 'Nothing was borrowed — the four elementary rules came from Connect 4 playing experience and the rest from debugging VICTOR’s failures. Chess theory doesn’t transfer; gravity makes this game its own mathematics.' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

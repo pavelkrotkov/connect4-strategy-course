@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 2 · The "7" Trap</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 2 · ~8 minutes</div>
+  <h1>The "7" Trap</h1>
+  <p class="subtitle">A double threat your opponent can't block — because the blocks are stacked on top of each other.</p>
+
+  <h2>Warm-up (30 seconds, from Lesson 1)</h2>
+  <p>Before the new idea, prove the old one is still there. No peeking at <a href="0001-the-double-threat.html">Lesson 1</a>.</p>
+  <div id="warmup"></div>
+
+  <h2>The idea: stacked threats</h2>
+  <p>Lesson 1's open three put two threats <em>side by side</em>. A defender who sees them can at least pick one. The "7" trap is nastier: it puts two threat squares <strong>in the same column, one directly above the other</strong> — and you own both. Now blocking isn't just insufficient, it's <em>suicidal</em>: the block disc becomes the floor your upper threat lands on. <span class="cite">(Concept: <a href="https://www.wargamer.com/how-to-win-connect-4">Wargamer, "How to win Connect 4"</a>; the stacked-threat mechanism is why Allis's solution tracks threats by the square they need, not the discs already placed — <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis 1988</a>.)</span></p>
+
+  <p>The formation is five discs drawing a "7": a <strong>horizontal three</strong> and a <strong>diagonal three</strong> sharing their corner disc. Here it is for Red — the corner is d3, shared by the row (b3–c3–d3) and the diagonal (b1–c2–d3):</p>
+
+  <div id="diagram"></div>
+
+  <p>Count Red's ways to win: the row can complete at <strong>a3</strong> or <strong>e3</strong>; the diagonal completes at <strong>e4</strong>. Look at e3 and e4 (marked): stacked. If Yellow ever blocks e3, that disc is the platform for Red's e4. Column e belongs to Red <em>forever</em> — and a3 is a spare. It doesn't matter which way the 7 faces; mirrored and flipped versions all work. <span class="cite">(<a href="https://www.wargamer.com/how-to-win-connect-4">Wargamer</a>)</span></p>
+
+  <h2>Puzzle 1 — Build the 7</h2>
+  <p>You are Red. Four of the five discs are placed; the bar of the 7 is missing one disc. <strong>Click the column that completes the formation.</strong> (Note: it won't create an <em>immediate</em> threat — you're building structure whose threats come due later. That's what makes it invisible to opponents who only look one move ahead.)</p>
+  <div id="p1"></div>
+
+  <h2>Puzzle 2 — Spring the trap</h2>
+  <p>The 7 is built, and Yellow has just played e1 — a disc in your poisoned column. You can now <strong>force a win in two moves</strong>. Which column starts the kill?</p>
+  <div id="p2"></div>
+
+  <h2>Puzzle 3 — Defending (or coaching) against it</h2>
+  <p>Flip perspectives — this is the one to remember when you're <em>letting your kid win</em>, or teaching them to defend.</p>
+  <div id="p3"></div>
+
+  <hr>
+
+  <h2>Take it to the living room</h2>
+  <p>The 7 takes about five quiet moves to assemble, and nobody who only checks for three-in-a-rows will see it coming — the completing move in Puzzle 1 looks completely harmless. Build it low and off-center while "trading" harmless moves. And for the graceful-loss games: assemble a 7, then conspicuously <em>don't</em> spring it — see if your kid ever notices the poisoned column. When they finally do, they've independently discovered stacked threats, which is genuinely deep Connect 4.</p>
+
+  <div class="aside">
+    <strong>Theory teaser:</strong> "Column e is Red's forever" is your first taste of the endgame logic that solved the game: wins in Connect 4 are claims on <em>future squares</em>, and whoever holds the right claims can simply wait while the board fills. Why the <em>height</em> of the claimed square (odd or even row) decides everything is the next theory lesson — <a href="../reference/glossary.html#odd-even">odd/even threats</a>.
+  </div>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> <a href="https://www.wargamer.com/how-to-win-connect-4">Wargamer's "How to win Connect 4"</a> for the trap itself; then skim §3 of <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis's thesis</a> where threats and their squares get their formal treatment.</p>
+
+  <footer>
+    <p>New terms: <a href="../reference/glossary.html#seven-trap">the "7" trap</a> · <a href="../reference/glossary.html#stacked">stacked threats / poisoned column</a> — added to the <a href="../reference/glossary.html">course glossary</a>. Previously: <a href="0001-the-double-threat.html">Lesson 1, The Double Threat</a>. Next: <a href="0003-odd-and-even-threats.html">Lesson 3, Odd and Even Threats</a>.</p>
+    <p>Questions? Tell an AI assistant which puzzle felt shaky and ask it to generate more positions like it.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Warm-up: mirror of Lesson 1's opener. Pair c–d on the bottom; b makes the
+  // open three (ends a and e). e fails: f is Yellow.
+  C4.puzzle(document.getElementById('warmup'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '..RR.YY'
+    ],
+    prompt: 'Red to move. Create a double threat.',
+    correct: [1],
+    success: 'Open three b–c–d, live ends at a and e. Lesson 1 is still in there.',
+    wrong: 'One of your options gives the three-in-a-row two live ends. Which side of your pair is unpoisoned?',
+    wrongByCol: {
+      4: 'e makes c–d–e, but the right end (f) is already Yellow — one live end, one easy block.',
+      2: 'Stacking makes a vertical pair — no immediate structure. Extend the pair sideways.',
+      3: 'Stacking makes a vertical pair — no immediate structure. Extend the pair sideways.'
+    },
+    threats: [[5, 0], [5, 4]]
+  });
+
+  // Static diagram: the complete 7. Red b1,c2,b3,c3,d3 plus filler d1;
+  // Yellow support c1,b2,d2 and fillers f1,g1 (f1/g1 keep row 1 dead for Yellow).
+  C4.board(document.getElementById('diagram'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.RRR...',
+      '.YRY...',
+      '.RYR.YY'
+    ],
+    threats: [[3, 0], [3, 4], [2, 4]],
+    caption: 'The "7": row b3–c3–d3 + diagonal b1–c2–d3. Marked: a3, e3 (row) and e4 (diagonal) — e3/e4 are stacked.'
+  });
+
+  // Puzzle 1: same position minus b3. Only b completes the formation
+  // (b1 and b2 are filled, so the disc lands on row 3).
+  C4.puzzle(document.getElementById('p1'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '..RR...',
+      '.YRY...',
+      '.RYR.YY'
+    ],
+    prompt: 'Red to move. Complete the 7.',
+    correct: [1],
+    success: 'Lands on b3: the bar (b3–c3–d3) and the diagonal (b1–c2–d3) are both in place. No immediate threat — but e3 and e4 are now both claimed by you, stacked, with a3 as a spare.',
+    wrong: 'That disc doesn’t join the horizontal bar to the diagonal. Find the column where your disc lands on row 3 and connects both lines.',
+    wrongByCol: {
+      4: 'Your disc lands on the floor at e1 — the e column is where the trap will PAY OFF, not where you build it. Keep it empty for now.',
+      0: 'a1 touches nothing. You need the fifth disc of the 7 itself.'
+    },
+    threats: [[3, 0], [3, 4], [2, 4]]
+  });
+
+  // Puzzle 2: 7 complete, Yellow just played e1. Red e2 forces the win:
+  // if Yellow blocks e3, Red wins at e4 (b1-c2-d3-e4); otherwise Red wins at e3.
+  C4.puzzle(document.getElementById('p2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.RRR...',
+      '.YRY...',
+      '.RYRYYY'
+    ],
+    prompt: 'Red to move. Force the win in two.',
+    correct: [4],
+    success: 'e2 loads both barrels. If Yellow blocks e3, that disc is the floor for your e4 — diagonal b1–c2–d3–e4. If Yellow does anything else, you play e3 — row b3–c3–d3–e3. No escape. (And a3 was your spare all along.)',
+    wrong: 'Playable, but nothing is forced — Yellow gets a free move to organize. You have a two-move kill on the board.',
+    wrongByCol: {
+      2: 'c4 makes a vertical three (c2–c3–c4) — a single threat. Yellow caps column c and your fork is still waiting.',
+      5: 'f2 builds nothing of yours — and the loaded column is one step to the left. Fire the stack.',
+      1: 'b2 grows your structure but forces nothing — Yellow gets a free move. The kill is already armed.',
+      0: 'a1 does nothing yet — a3 only becomes playable after two more discs land in column a.'
+    },
+    threats: [[3, 0], [3, 4], [2, 4]]
+  });
+
+  // Puzzle 3: defense view. Same diagram position, Yellow to move (R5, Y4).
+  C4.choice(document.getElementById('p3'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.RRR...',
+      '.YRY...',
+      '.RYR.YY'
+    ],
+    prompt: 'You are Yellow now. Red has the 7. Which column must Yellow treat as lava?',
+    options: [
+      { label: 'Column c', correct: false,
+        explain: 'Column c is safe — a Yellow disc there lands harmlessly on c4 and threatens nothing for Red.' },
+      { label: 'Column e', correct: true,
+        explain: 'Every disc in e helps Red: fill e1/e2 and Red plays e3 (row four); block e3 and Red plays e4 (diagonal four). Stacked threats poison the whole column — the only defense was to prevent the 7 from being built.' },
+      { label: 'Column g', correct: false,
+        explain: 'Column g is far from the action — a Yellow disc there gives Red nothing at all.' }
+    ],
+    threats: [[3, 4], [2, 4]]
+  });
+
+});
+</script>
+</body>
+</html>

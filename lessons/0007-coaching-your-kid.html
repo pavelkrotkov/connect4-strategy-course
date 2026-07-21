@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 7 · Coaching Your Kid</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 7 · ~9 minutes</div>
+  <h1>Coaching Your Kid</h1>
+  <p class="subtitle">Everything the course taught you, turned into a curriculum for someone small.</p>
+
+  <h2>Warm-up (15 seconds, from Lesson 6)</h2>
+  <div id="warmup"></div>
+
+  <h2>The idea: be their zone, not their wall</h2>
+  <p>You've been learning inside a principle this whole course: every lesson sat just past what you could already do. That's Vygotsky's <em>zone of proximal development</em>, and your kid needs the same thing from you at the board: an opponent exactly one notch stronger than their current game. <span class="cite">(<a href="https://www.simplypsychology.org/zone-of-proximal-development.html">ZPD overview</a>)</span></p>
+  <p>Two facts carry the whole lesson. First, a research finding: on the skills where it has been measured, <strong>guided discovery beats telling</strong> — and it also beats letting them flounder. A well-timed question tends to outperform both the lecture and the shrug. <span class="cite">(<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9545698/">meta-analysis of guided play</a>, echoing Alfieri et al. 2011)</span> Second, a piece of chess-parenting folklore that every parent who has tried it confirms: <strong>kids detect thrown games</strong>. A fake blunder teaches nothing and costs trust. The honest alternative is what you've been collecting since Lesson 3: real strategies that are genuinely weaker — c/e openings, even-parity claims, a skipped scan question — played at full effort. You can truly lose from those stances. That's what makes the wins they take from you real.</p>
+  <p>The full stage-ladder, scripts, and handicap menu live on the new <a href="../reference/coaching-card.html">coaching card</a> — the fridge document. The drills below train the judgment calls the card can't make for you.</p>
+
+  <h2>Scenario 1 — The block</h2>
+  <p>Your stage-1 kid just slammed a disc down on your three-in-a-row, beaming. What's the coaching move?</p>
+  <div id="s1"></div>
+
+  <h2>Scenario 2 — Staging a discovery</h2>
+  <p>Now the hard skill: engineering the board so <em>they</em> find the open three. Your kid (Yellow) has the c–d pair. You want them to discover the double threat themselves next turn. Three candidate moves — only one actually leaves the discovery on the table.</p>
+  <div id="s2"></div>
+
+  <h2>Scenario 3 — The unsprung trap</h2>
+  <p>Three turns ago you quietly finished a 7. Your kid hasn't noticed the poisoned column. The board is filling up.</p>
+  <div id="s3"></div>
+
+  <h2>Scenario 4 — Choosing the handicap</h2>
+  <p>Tonight you want a close game you could genuinely lose. Which lever?</p>
+  <div id="s4"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>This week, play one game where you don't try to win <em>or</em> lose — just diagnose. Which stage on the <a href="../reference/coaching-card.html">card</a> is your kid actually at? (Parents guess high; the tell is pairs, not threes.) Then set your notch: one stage up, honest handicap from the menu, one question per game. The finish line of this whole course isn't beating them — it's the day they run the five-question scan on <em>you</em>, find the seam, and win for real. Budget a few months. Enjoy losing ground.</p>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> <a href="https://www.chesskid.com/learn/articles/how-to-teach-your-kids-to-play-chess">ChessKid's guide to teaching kids</a> — chess-flavored general craft (short sessions, earned wins) that transfers; note it covers the basics, not the thrown-games point. For the research spine, the <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9545698/">guided-play meta-analysis</a> is the anchor. And when your kid does something at the board you can't read, describe it to an AI assistant — staging the next discovery is a two-player game, and it can be a useful second.</p>
+
+  <footer>
+    <p>New reference: the <a href="../reference/coaching-card.html">coaching card</a>. Previously: <a href="0006-defense.html">Lesson 6, Defense</a>. Next: <a href="0008-threats-sharing-a-column.html">Lesson 8, Threats That Share a Column</a>.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  C4.choice(document.getElementById('warmup'), {
+    prompt: 'Recall: question 2 of the five-question scan is —',
+    options: [
+      { label: 'Can they win now?', correct: true,
+        explain: 'Win check, THEIR win check, gift check, building check, reality check. You’ll be asking your kid these soon — in order.' },
+      { label: 'What are they building?', correct: false,
+        explain: 'That’s question 4. The order matters: immediate wins (mine, theirs) come before structure. Scan: win? their win? gift? building? real?' },
+      { label: 'Is the threat real?', correct: false,
+        explain: 'That’s question 5, the tempo-saver. Question 2 is the emergency check: can THEY win right now?' }
+    ]
+  });
+
+  C4.choice(document.getElementById('s1'), {
+    prompt: 'What’s the coaching move?',
+    options: [
+      { label: 'Praise the block, specifically', correct: true,
+        explain: '"You saw my three before I finished it" — strategy-praise, named precisely, then keep building pairs. The next discovery (blocking EARLIER) has to stay theirs to find. Guided discovery: presence, not lectures.' },
+      { label: 'Teach open pairs, now', correct: false,
+        explain: 'The lecture lands on a kid mid-celebration and steals next week’s discovery. Research is clear: guidance beats telling — save it for a question at the right moment, in a later game.' },
+      { label: 'Win fast, show why', correct: false,
+        explain: 'Punishing the block they’re proud of teaches that defending is futile — the opposite lesson. Stage 1 kids need their blocks to WORK. Lose to an open three honestly if you must.' }
+    ]
+  });
+
+  // Staging drill. Yellow pair c1-d1: their discovery is b1 (open three b-c-d,
+  // ends a1+e1). Red must not touch a1, b1, or e1. f2 is inert; a1 secretly
+  // kills the left end; e1 kills the b-e window.
+  C4.choice(document.getElementById('s2'), {
+    board: [
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '..YY.RR'
+    ],
+    prompt: 'You are Red. Leave their discovery on the table.',
+    options: [
+      { label: 'Drop at a1', correct: false,
+        explain: 'Looks maximally harmless — but a1 is the LEFT END of the open three they’re about to build (b1 makes b–c–d with ends a1 and e1). The far corner is load-bearing. Staging requires reading their windows, not just avoiding their discs.' },
+      { label: 'Drop at e1', correct: false,
+        explain: 'This quietly kills the b–e window: after your e1, their b1 makes a three with only ONE live end. You just defended — correctly, by Lesson 1! — but tonight’s job was to leave the door open.' },
+      { label: 'Drop at f2', correct: true,
+        explain: 'Nothing forcing: it touches none of their windows and demands no answer (it does quietly build your f-tower — but a FORCING threat would hijack their turn and steal the discovery). Now b1 is sitting there waiting for them: open three, both ends live, their first real win.' }
+    ]
+  });
+
+  C4.choice(document.getElementById('s3'), {
+    prompt: 'Do you spring the trap?',
+    options: [
+      { label: 'Spring it, explain after', correct: false,
+        explain: 'You get a win and give a lecture; they get a mystery defeat. The trap is worth more UNSPRUNG: it’s a standing puzzle their next few moves might bump into.' },
+      { label: 'Leave it, stay watchful', correct: true,
+        explain: 'Let the poisoned column sit. If their hand hovers over it, spend your one question: "look up — what lands on top of that?" If they never touch it and the endgame springs it anyway, rebuild that single position afterward and ask what else they could have played. Either way the discovery is theirs.' },
+      { label: 'Dismantle it, play straight', correct: false,
+        explain: 'You can’t un-build discs — and you don’t need to. An unsprung trap costs them nothing until touched, and it’s the best teaching object on the board: a real danger, discovered at their pace.' }
+    ]
+  });
+
+  C4.choice(document.getElementById('s4'), {
+    prompt: 'Which handicap do you pick?',
+    options: [
+      { label: 'Fake an occasional blunder', correct: false,
+        explain: 'The one forbidden lever. Kids smell a thrown game, the win feels counterfeit, and trust in every FUTURE win erodes too. If you must be beatable, be honestly weaker — not dishonestly careless.' },
+      { label: 'Open c, bank evens', correct: true,
+        explain: 'Two invisible, honest handicaps that stack: c/e openings make the game a fair draw from move one (Lesson 5), and even-parity claims mean your loudest threats never cash (Lesson 3). You fight at full effort from a losing stance — their win, when it comes, is real.' },
+      { label: 'Allow takebacks all game', correct: false,
+        explain: 'Fine at stage 0 — but past that it teaches that moves aren’t commitments, and the zugzwang arithmetic they’ll eventually learn depends on every move counting. Handicap your STRATEGY, not the rules.' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

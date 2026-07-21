@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4 · Zugzwang</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/c4.js" defer></script>
+<script src="../assets/c4sim.js" defer></script>
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Lesson 4 · ~9 minutes</div>
+  <h1>Zugzwang</h1>
+  <p class="subtitle">Your banked claim doesn't win the game. The other player's forced move does.</p>
+
+  <h2>Warm-up (20 seconds, from Lesson 3)</h2>
+  <div id="warmup"></div>
+
+  <h2>The idea: run them out of safe moves</h2>
+  <p>Lesson 3 left one thing unexplained. You've banked an odd claim — a square that's yours <em>if</em> someone fills the column up to it. But nobody's going to volunteer. Why would Yellow ever play under your winning square?</p>
+
+  <p>Because in Connect 4, <strong>you must move</strong>. There is no pass. Every turn, each player burns one square off the board — and when all the harmless squares are gone, whoever's turn it is must play a harmful one. That's <a href="../reference/glossary.html#zugzwang"><strong>zugzwang</strong></a>: the obligation to move becomes the losing weapon, and the endgame is nothing but an arithmetic race — <em>who runs out of safe squares first?</em> <span class="cite">(Allis devotes a chapter of the <a href="https://tromp.github.io/c4/connect4_thesis.pdf">thesis</a> to exactly this control-of-zugzwang accounting; see also <a href="https://web.mit.edu/sp.268/www/2010/connectFourSlides.pdf">MIT's slides</a>.)</span></p>
+
+  <p>So the skill is <strong>counting</strong>. Call a square <em>neutral</em> if either player can fill it without consequence. On your turn with the claims banked: if the number of neutral squares is <strong>odd</strong>, you take the last one and your opponent cracks first. If it's <strong>even</strong>, you're the one who'll be squeezed — you need to change the count (or make a new threat) <em>before</em> entering the endgame. This is the parity of Lesson 3 wearing work clothes.</p>
+
+  <h2>Play it — the squeeze</h2>
+  <p>Below is a real endgame. You are Red, and your position is exactly what this course has taught you to build: a banked <strong>odd claim at a3</strong> (your b3–c3–d3 three, with a1 already filled — so a2 is lava for Yellow). Three neutral squares remain: e6, f6, g6. Three is odd, and it's your move. Squeeze.</p>
+  <div id="sim"></div>
+
+  <p><strong>Now play it again and lose it.</strong> Reset, and this time play column <strong>a</strong> yourself. Watch Yellow calmly take a3, and feel the game go dead in your hands — every disc you drop afterward is just filling a drawn board. (Now and then Yellow will even cash the leftovers on the top row — row 6 is <em>even</em>, and Lesson 3 told you whose row that is.) One careless tempo is the difference between a won endgame and nothing.</p>
+
+  <h2>Check — the count</h2>
+  <div id="p1"></div>
+
+  <h2>Take it to the living room</h2>
+  <p>Real games against your kid now have a script: build quietly (Lesson 2), bank one odd claim (Lesson 3), then <em>stop attacking</em>. Count the neutral squares, keep the count in your favor, and make cheerful harmless moves until they run out of road — the win will look like an accident. And the graceful-loss lever is the same tool reversed: when you hold a winning claim but want a draw, spend one move in your own claim's column at the right moment. The claim dies invisibly — no thrown game, no suspicious blunder, just "wow, you defended really well today."</p>
+
+  <div class="aside">
+    <strong>The full circle:</strong> you now hold the actual shape of the 1988 solution — center first, build double and stacked threats, bank claims on your parity, and win the zugzwang count. Allis's proof is these four lessons made rigorous: nine rules that certify, from move one, that the first player can always keep a claim the zugzwang arithmetic will eventually cash. <span class="cite">(<a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis, <em>A Knowledge-based Approach of Connect-Four</em></a>)</span>
+  </div>
+
+  <h2>Go deeper</h2>
+  <p><strong>Primary source for this lesson:</strong> the zugzwang and control chapters of <a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis's thesis</a> — you're now equipped to read them for real. Gentler companion: <a href="https://web.mit.edu/sp.268/www/2010/connectFourSlides.pdf">MIT's Connect Four slides</a>. And to test all of this against live humans, <a href="https://papergames.io/en/connect4">papergames.io</a> is a low-stakes sandbox.</p>
+
+  <footer>
+    <p>Terms: <a href="../reference/glossary.html#zugzwang">zugzwang</a> · the <a href="../reference/cheat-sheet.html">field guide</a> now includes the endgame count. Previously: <a href="0003-odd-and-even-threats.html">Lesson 3, Odd and Even Threats</a>. Next: <a href="0005-opening-play.html">Lesson 5, Opening Play</a>.</p>
+    <p>Lost a sim game and don't see why? Describe the position to an AI assistant and ask it to replay the line square by square.</p>
+  </footer>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  C4.choice(document.getElementById('warmup'), {
+    prompt: 'Quick recall: Yellow — the second player — banks lasting claims on which rows?',
+    options: [
+      { label: 'Rows 1, 3, 5', correct: false,
+        explain: 'Those are the odd rows — the FIRST player’s currency. Shadowing hands Red the odd squares of every column Red opens.' },
+      { label: 'Rows 2, 4, 6', correct: true,
+        explain: 'Even rows are Yellow’s: answering on top of Red’s discs collects rows 2, 4, 6. Keep this in mind during the simulator below — especially about row 6.' },
+      { label: 'Rows 5 and 6', correct: false,
+        explain: 'Height isn’t what matters — parity is. Yellow banks the EVEN rows: 2, 4, 6.' }
+    ]
+  });
+
+  // Machine-verified endgame: 17R/17Y, Red to move. Red's only claim: a3
+  // (b3-c3-d3). Neutrals: e6, f6, g6 (odd count => Yellow cracks first).
+  // Position generated and exhaustively window-checked by script; sim policy
+  // unit-tested (main line: zugzwang -> Red wins; blunder line: draw).
+  C4.sim(document.getElementById('sim'), {
+    board: [
+      '.RRY...',
+      '.YRYYYR',
+      '.RYYRYY',
+      '.RRRYRR',
+      '.YRYYYR',
+      'YYRYRRR'
+    ],
+    intro: 'You are Red. Your claim: a3. Neutral squares: e6, f6, g6. Do not touch column a.',
+    messages: {
+      win: 'You win — a3–b3–c3–d3. Yellow was never beaten by an attack; Yellow was beaten by having to move.',
+      lose: 'Yellow wins — and look WHERE: the even squares. You spent your claim, and the leftovers belonged to the second player.',
+      draw: 'Board full — draw. Your a3 claim died the moment column a got touched at the wrong time. Reset and count again.',
+      block: c => 'Yellow takes a3. Your claim is gone — the rest is a formality.',
+      zugzwang: c => 'ZUGZWANG. Every neutral square is gone and Yellow MUST play column a, flooring your claim.'
+    }
+  });
+
+  C4.choice(document.getElementById('p1'), {
+    prompt: 'Endgame, all claims banked, and FIVE neutral squares remain. It is your turn. Who gets squeezed?',
+    options: [
+      { label: 'You are forced first', correct: false,
+        explain: 'Count it out: you take neutrals 1, 3 and 5 — the LAST one. Your opponent then faces a board with nothing safe left. Odd count on your turn = their problem.' },
+      { label: 'They are forced first', correct: true,
+        explain: 'Yes: with an odd neutral count on your move, you take the last safe square (1st, 3rd, 5th) and the obligation to move does the rest. Even count? Then it flips — burn or create a tempo BEFORE the endgame locks.' },
+      { label: 'Depends on the rows', correct: false,
+        explain: 'Row parity decided WHERE your claims live (Lesson 3). Who cracks first is decided by the NUMBER of neutral squares: odd on your turn squeezes them, even squeezes you.' }
+    ]
+  });
+
+});
+</script>
+</body>
+</html>

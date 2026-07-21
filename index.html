@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect 4 Strategy — An Interactive Course</title>
+<link rel="stylesheet" href="assets/course.css">
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · A Course</div>
+  <h1>Connect 4 Strategy</h1>
+  <p class="subtitle">Eleven short lessons, from your first double threat to the theory that solved the game.</p>
+
+  <p>This course was written for a parent who wanted two things at once: to reliably win — or lose gracefully, on purpose — against a kid across the table, and to actually understand <em>why</em> Connect 4 is a solved game rather than take it on faith. Both threads run through every lesson. Each one is short (5–10 minutes), teaches one idea, and proves it with an interactive, machine-verified puzzle rather than a diagram you have to trust.</p>
+
+  <p>Every non-obvious claim is either backed by a citation or, where no good source existed, verified programmatically before publishing — board positions checked for legality and uniqueness, opening evaluations queried live from a perfect solver. Read the <a href="reference/glossary.html">glossary</a> first if a term stops you.</p>
+
+  <h2>The lessons</h2>
+  <p>Built to be read in order — each one leans on the last — but if you already play casually, start wherever the description grabs you.</p>
+  <ol>
+    <li><a href="lessons/0001-the-double-threat.html">The Double Threat</a> — the one idea behind almost every won game: two ways to win at once.</li>
+    <li><a href="lessons/0002-the-seven-trap.html">The "7" Trap</a> — a five-disc shape that makes blocking suicidal.</li>
+    <li><a href="lessons/0003-odd-and-even-threats.html">Odd and Even Threats</a> — why a winning square only counts if it falls on your row.</li>
+    <li><a href="lessons/0004-zugzwang.html">Zugzwang</a> — an interactive endgame simulator: win by forcing your opponent to move.</li>
+    <li><a href="lessons/0005-opening-play.html">Opening Play</a> — why the first move is d, and how to punish every common reply (solver-verified).</li>
+    <li><a href="lessons/0006-defense.html">Defense</a> — the five-question scan to run before every move.</li>
+    <li><a href="lessons/0007-coaching-your-kid.html">Coaching Your Kid</a> — staging discoveries and honest handicaps, grounded in guided-play research.</li>
+    <li><a href="lessons/0008-threats-sharing-a-column.html">Threats That Share a Column</a> — the "basement rule": when claims stack up, only the lowest one is real.</li>
+    <li><a href="lessons/0009-allis-nine-rules.html">Allis's Nine Rules</a> — the actual certificate system behind the 1988 proof, read from the source thesis.</li>
+    <li><a href="lessons/0010-the-trap-zoo.html">The Trap Zoo</a> — the "7" was one animal in a family; a recognition gallery for the rest.</li>
+    <li><a href="lessons/0011-playing-second.html">Playing Second</a> — what to do when you don't get to open.</li>
+  </ol>
+
+  <h2>Reference cards</h2>
+  <p>Printable, one-page summaries — the pages worth keeping after you've finished a lesson.</p>
+  <ul>
+    <li><a href="reference/cheat-sheet.html">The Field Guide</a> — every principle from the course on one page.</li>
+    <li><a href="reference/openings.html">The Openings Card</a> — solver-verified replies for both the first and second player.</li>
+    <li><a href="reference/trap-zoo.html">The Trap Zoo</a> — all five trap shapes in one gallery.</li>
+    <li><a href="reference/coaching-card.html">The Coaching Card</a> — the stage ladder, scripts, and handicap menu for playing with a kid.</li>
+    <li><a href="reference/allis-rules.html">Allis's Nine Rules</a> — the certificate table for reading the original thesis.</li>
+    <li><a href="reference/glossary.html">The Glossary</a> — every course term, defined once, linked everywhere.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <p>Primary sources cited throughout: Victor Allis's 1988 thesis <a href="https://tromp.github.io/c4/connect4_thesis.pdf"><em>A Knowledge-based Approach of Connect-Four</em></a> (the proof that the first player wins); <a href="https://connect4.gamesolver.org">Pascal Pons' perfect solver</a> (used live for every opening and endgame evaluation in Lessons 5, 6, and 11); and, for the coaching thread, a meta-analysis of guided-play research and general chess-teaching craft, both linked from Lesson 7.</p>
+
+  <div class="aside">
+    <strong>How this was built:</strong> this course was authored interactively with Claude (Anthropic), working from primary sources rather than parametric memory — every board position was constructed and checked by a small verification script, and every opening claim was pulled live from the solver above. If a lesson's puzzle is unclear or a claim looks wrong, an AI assistant can trace the position or re-query the sources with you; that's how this was made.
+  </div>
+
+  <footer>
+    <p>Eleven lessons · six reference cards · zero dependencies — every page here is self-contained HTML.</p>
+  </footer>
+</main>
+</body>
+</html>

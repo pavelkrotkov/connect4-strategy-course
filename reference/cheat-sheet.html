@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect 4 Field Guide</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+  <div class="kicker">Connect 4 Strategy · Reference</div>
+  <h1>The Field Guide</h1>
+  <p class="subtitle">Everything from Lessons 1–3 on one printable page. Terms link to the <a href="glossary.html">glossary</a>.</p>
+
+  <h2>Before the game</h2>
+  <p><strong>1 · Take the center.</strong> Moving first, play column d — it's the only opening that wins against perfect defense, because every horizontal window on a row passes through it. Second player: vs d1 answer d2 — but the center is NOT always the punish (vs b1 only c1 wins; d1 just draws): see the <a href="openings.html">openings card</a>'s second-player table. <span class="cite">(<a href="https://tromp.github.io/c4/connect4_thesis.pdf">Allis 1988</a>; <a href="../lessons/0011-playing-second.html">Lesson 11</a>)</span></p>
+
+  <h2>Attacking</h2>
+  <p><strong>2 · Win with two threats, not one.</strong> A single <a href="glossary.html#threat">threat</a> gets blocked. Manufacture a <a href="glossary.html#double-threat">double threat</a> — the simplest is the <a href="glossary.html#open-three">open three</a>: three in a row, both ends empty <em>and</em> <a href="glossary.html#playable">playable</a>. <span class="cite">(<a href="../lessons/0001-the-double-threat.html">Lesson 1</a>)</span></p>
+  <p><strong>3 · Stack threats when you can.</strong> Two of your threat squares in one column, one above the other, poison the whole column: any block floors your upper win. The <a href="glossary.html#seven-trap">"7" formation</a> (horizontal three + diagonal three sharing a corner disc) builds a stack in five quiet moves; so do its cousins — parallel diagonals (rails), a descending diagonal over a bar (hook), crossed diagonals (X) — see the <a href="trap-zoo.html">trap zoo</a>. Spring any of them by filling the column to just below your lower square. Beware the <a href="glossary.html#mirage">mirage</a>: two lines finishing on ONE shared square are a single claim, not a stack. <span class="cite">(<a href="../lessons/0002-the-seven-trap.html">Lesson 2</a>, <a href="../lessons/0010-the-trap-zoo.html">Lesson 10</a>)</span></p>
+  <p><strong>4 · Bank claims on YOUR rows.</strong> Count a claim's row from the floor. First player: odd rows (1, 3, 5) are money — sit on them and let the board fill. Even-row claims are bluffs. Second player: exactly reversed. <span class="cite">(<a href="../lessons/0003-odd-and-even-threats.html">Lesson 3</a>)</span></p>
+
+  <h2>Defending</h2>
+  <p><strong>5 · Block pairs, not threes.</strong> An open three is already a loss — the real block happens when the opponent has TWO with both sides open. <span class="cite">(<a href="../lessons/0001-the-double-threat.html">Lesson 1</a>)</span></p>
+  <p><strong>6 · A threat is only urgent if its square is playable.</strong> Empty column below it = latent. But watch latent threats' rows: an opponent claim on their parity row must be defused early or never. <span class="cite">(<a href="../lessons/0001-the-double-threat.html">L1</a>, <a href="../lessons/0003-odd-and-even-threats.html">L3</a>)</span></p>
+  <p><strong>7 · Map the poisoned columns.</strong> Before "just filling," check: does my disc here floor an opponent threat above? Stacked opponent claims make a column lava — route around it and force <em>them</em> to enter it first. <span class="cite">(<a href="../lessons/0002-the-seven-trap.html">Lesson 2</a>)</span></p>
+  <p><strong>8 · Verticals are noise.</strong> A vertical three's completion square is always immediately playable — block on sight and it's dead. Towers never beat attention. <span class="cite">(<a href="../lessons/0003-odd-and-even-threats.html">Lesson 3</a>)</span></p>
+
+  <h2>The endgame</h2>
+  <p><strong>9 · Win the count, not the fight.</strong> Once claims are banked, stop attacking and count the neutral squares (safe for both players). Odd count on your turn: take neutrals and let the move-obligation crush them. Even count: you're the one being squeezed — burn a tempo or make a fresh threat <em>before</em> the board locks. <span class="cite">(<a href="../lessons/0004-zugzwang.html">Lesson 4</a>)</span></p>
+
+  <p><strong>10 · The basement rules the building.</strong> Claims sharing a column: only the lowest is real — everything above it is hostage, whatever its parity. Audit every claim in order: window alive? lowest in its column? right parity? A claim failing any check counts for nothing in the endgame arithmetic. <span class="cite">(<a href="../lessons/0008-threats-sharing-a-column.html">Lesson 8</a>)</span></p>
+
+  <h2>Every move: the five-question scan</h2>
+  <p><strong>11 · Scan before you drop.</strong> ① Can I win right now? ② Can they? ③ Does my disc floor a square they want (look one square above your landing spot)? ④ What are they building (open pairs, a 7 in progress)? ⑤ Is their threat even real — window dead? claim on the wrong parity? Blocking dead threats wastes the tempi that decide endgames — and when two blocks kill one window, take the one on the better square. <span class="cite">(<a href="../lessons/0006-defense.html">Lesson 6</a>)</span></p>
+
+  <h2>Playing the kids</h2>
+  <p><strong>To win quietly:</strong> build low, off-center structure (the 7 looks like nothing); bank one odd claim; trade harmless moves and wait.</p>
+  <p><strong>To lose gracefully:</strong> threaten loudly on the <em>wrong</em> parity — even-row claims look scary and never pay out. Leave your own pairs unextended, "miss" their open pairs, and let them find the double threat. Holding a won endgame you'd rather not win? Quietly spend one move in your own claim's column — the claim dies with no visible blunder.</p>
+  <p><strong>To coach:</strong> when they lose to a trap, replay it and ask "which column was lava?" — discovering stacked threats themselves beats being told.</p>
+
+  <footer>
+    Part of the <a href="../index.html">Connect 4 strategy course</a> · Lessons: <a href="../lessons/0001-the-double-threat.html">1</a> · <a href="../lessons/0002-the-seven-trap.html">2</a> · <a href="../lessons/0003-odd-and-even-threats.html">3</a> · Print me.
+  </footer>
+</main>
+</body>
+</html>
